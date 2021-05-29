@@ -19,6 +19,7 @@ import kodlamaio.hmrs.dataAccess.abstracts.EmployerDao;
 import kodlamaio.hmrs.dataAccess.abstracts.UserActivationDao;
 import kodlamaio.hmrs.entities.concretes.Employer;
 
+
 @Service
 public class EmployerManager implements EmployerService{
 	
@@ -31,19 +32,21 @@ public class EmployerManager implements EmployerService{
 	
 	
 
-	@Autowired
+	
+
+	
+    @Autowired
 	public EmployerManager(EmployerDao employerDao, UserActivationDao userActivationDao,
 			ValidationService<Employer> validationService, ActivationAdapter activationAdapter,
 			EmailSenderAdapter emailSenderAdapter) {
 		super();
 		this.employerDao = employerDao;
 		this.userActivationDao = userActivationDao;
+		
 		this.validationService = validationService;
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
 	}
-
-	
 
 	@Override
 	public DataResult<List<Employer>> getAll() {
@@ -78,5 +81,9 @@ public class EmployerManager implements EmployerService{
 		employerDao.save(user);
 		return new SuccessResult(String.format("%s şirketi başarıyla sisteme kaydedildi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName()));
 	}
+
+
+
+
 
 }
