@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.EagerTransformation;
@@ -43,6 +44,12 @@ public class CloudinaryManager implements ImageService{
 	public DataResult<Map> getImage(String imageUrl) throws Exception{
 		Map result = cloudinary.api().resource(imageUrl, ObjectUtils.emptyMap());
 		return new SuccessDataResult<Map>(result); 
+	}
+
+	@Override
+	public Result upload(MultipartFile multiPartFile) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

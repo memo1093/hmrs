@@ -17,10 +17,10 @@ import kodlamaio.hmrs.entities.concretes.JobPositionAdvertisement;
 
 @RestController
 @RequestMapping("/api/jobAdvertisements")
-public class JobPositionAdvertisementController {
+public class JobPositionAdvertisementsController {
 	private JobPositionAdvertisementService jobPositionAdvertisementService;
 	@Autowired
-	public JobPositionAdvertisementController(JobPositionAdvertisementService jobPositionAdvertisementService) {
+	public JobPositionAdvertisementsController(JobPositionAdvertisementService jobPositionAdvertisementService) {
 		super();
 		this.jobPositionAdvertisementService = jobPositionAdvertisementService;
 	}

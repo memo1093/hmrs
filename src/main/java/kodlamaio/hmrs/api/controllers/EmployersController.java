@@ -15,15 +15,15 @@ import kodlamaio.hmrs.business.abstracts.EmployerService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.entities.concretes.Employer;
-import kodlamaio.hmrs.entities.concretes.JobPosition;
+
 
 @RestController
 @RequestMapping("/api/employers")
-public class EmployerController {
+public class EmployersController {
 	private EmployerService employerService;
 	
 	@Autowired
-	public EmployerController(EmployerService employerService) {
+	public EmployersController(EmployerService employerService) {
 		super();
 		this.employerService = employerService;
 	}

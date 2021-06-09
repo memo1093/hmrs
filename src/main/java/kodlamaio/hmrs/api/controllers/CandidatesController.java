@@ -17,10 +17,10 @@ import kodlamaio.hmrs.entities.concretes.Candidate;
 
 @RestController
 @RequestMapping("/api/candidates")
-public class CandidateController {
+public class CandidatesController {
 	private CandidateService candidateService;
 	@Autowired
-	public CandidateController(CandidateService candidateService) {
+	public CandidatesController(CandidateService candidateService) {
 		super();
 		this.candidateService=candidateService;
 	}
@@ -36,6 +36,7 @@ public class CandidateController {
 	public Result addCandidates(@RequestBody Candidate user){
 		return this.candidateService.add(user);
 	}
+	
 	
 }
 

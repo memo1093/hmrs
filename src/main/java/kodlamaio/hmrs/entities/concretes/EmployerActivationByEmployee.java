@@ -26,12 +26,16 @@ public class EmployerActivationByEmployee {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
+	
 	@Column(name="employers_id")
 	private int employersId;
+	
 	@Column(name="employees_id")
 	private int employeesId;
+	
 	@Column(name="is_confirmed")
 	private boolean isConfirmed;
+	
 	@Column(name="confirm_date")
 	private LocalDate date;
 

@@ -17,10 +17,10 @@ import kodlamaio.hmrs.entities.concretes.Employee;
 
 @RestController
 @RequestMapping("/api/employees")
-public class EmployeeController {
+public class EmployeesController {
 	private EmployeeService employeeService;
 
-	public EmployeeController(EmployeeService employeeService) {
+	public EmployeesController(EmployeeService employeeService) {
 		super();
 		this.employeeService = employeeService;
 	}

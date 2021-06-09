@@ -5,70 +5,114 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kodlamaio.hmrs.business.abstracts.GraduationService;
+import kodlamaio.hmrs.business.abstracts.JobExperienceService;
+import kodlamaio.hmrs.business.abstracts.LanguageService;
 import kodlamaio.hmrs.business.abstracts.ResumeService;
+import kodlamaio.hmrs.business.abstracts.TalentService;
+import kodlamaio.hmrs.business.abstracts.WebAddressService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
-import kodlamaio.hmrs.core.utilities.results.ErrorDataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
-import kodlamaio.hmrs.dataAccess.abstracts.GraduationDao;
-import kodlamaio.hmrs.dataAccess.abstracts.LanguageDao;
 import kodlamaio.hmrs.dataAccess.abstracts.ResumeDao;
-import kodlamaio.hmrs.dataAccess.abstracts.TalentDao;
 import kodlamaio.hmrs.entities.concretes.Graduation;
+import kodlamaio.hmrs.entities.concretes.JobExperience;
 import kodlamaio.hmrs.entities.concretes.Language;
 import kodlamaio.hmrs.entities.concretes.Resume;
 import kodlamaio.hmrs.entities.concretes.Talent;
+import kodlamaio.hmrs.entities.concretes.WebAddress;
 
 @Service
-public class ResumeManager implements ResumeService {
-    
+public class ResumeManager implements ResumeService{
 	private ResumeDao resumeDao;
-	private GraduationDao graduationDao;
-	private TalentDao talentDao;
-	private LanguageDao languageDao;
+	private GraduationService graduationService;
+	private JobExperienceService jobExperienceService;
+	private TalentService talentService;
+	private WebAddressService webAddressService;
+	private LanguageService languageService;
+	
 	
 	@Autowired
-	public ResumeManager(ResumeDao resumeDao, GraduationDao graduationDao, TalentDao talentDao,
-			LanguageDao languageDao) {
+	public ResumeManager(ResumeDao resumeDao, GraduationService graduationService,
+			JobExperienceService jobExperienceService, TalentService talentService, WebAddressService webAddressService,
+			LanguageService languageService) {
 		super();
 		this.resumeDao = resumeDao;
-		this.graduationDao = graduationDao;
-		this.talentDao = talentDao;
-		this.languageDao = languageDao;
+		this.graduationService = graduationService;
+		this.jobExperienceService = jobExperienceService;
+		this.talentService = talentService;
+		this.webAddressService = webAddressService;
+		this.languageService = languageService;
+	}
+
+	
+
+	@Override
+	public Result add(Resume resume) {
+		
+		resume.getGraduations().forEach(graduation->graduation.setResume(resume));
+		resume.getLanguages().forEach(language->language.setResume(resume));
+		resume.getTalents().forEach(talents->talents.setResume(resume));
+		resume.getWebAddresses().forEach(webAddress->webAddress.setResume(resume));
+		resumeDao.save(resume);
+		return new SuccessResult("Veri kaydetme işlemi başarılı!");
 	}
 
 	@Override
-	public Result Add(Resume resume) {
-		//if (!resume.getGraduations().isEmpty()) {
-//		for (Graduation graduation : resume.getGraduations()) {
-//			graduationDao.save(graduation);
-//			
-//			}
-//		//}
-//		if (!resume.getLanguages().equals(null)) {
-//			for (Language language : resume.getLanguages()) {
-//				languageDao.save(language);
-//				
-//			}
-//		}
-//		if (!resume.getTalents().equals(null)) {
-//			for (Talent talent : resume.getTalents()) {
-//				talentDao.save(talent);
-//				
-//			}
-//		}
-		resumeDao.save(resume);
+	public DataResult<List<Resume>> getAll() {
+
+		return new SuccessDataResult<List<Resume>>(resumeDao.findAll(),"Özgeçmiş listesi getirme işlemi başarılı!");
+	}
+
+	@Override
+	public DataResult<Resume> getById(int id) {
 		
-		return new SuccessResult("Özgeçmiş girişi başarılı!");
+		return new SuccessDataResult<Resume>(resumeDao.getOne(id),"Özgeçmiş getirme başarılı!");
 	}
 
 	@Override
 	public DataResult<List<Resume>> getByCandidateId(int id) {
-		if (id==0) {
-			return new ErrorDataResult<List<Resume>>(null, "Veri getirme başarısız. Lütfen id yi kontrol ediniz.");
-		}
-		return new SuccessDataResult<List<Resume>>(resumeDao.getByCandidate_Id(id),"Veri listeleme başarılı!");
+		
+		return new SuccessDataResult<List<Resume>>(resumeDao.getByCandidate_Id(id),"Özgeçmiş listesi getirme işlemi başarılı!");
 	}
 
+	@Override
+	public Result addGraduation(Graduation graduation) {
+		
+				
+		return graduationService.add(graduation);
+	}
+
+
+
+	@Override
+	public Result addJobExperience(JobExperience jobExperience) {
+		
+		return jobExperienceService.add(jobExperience);
+	}
+
+	@Override
+	public Result addTalent(Talent talent) {
+		
+		return talentService.add(talent);
+		
+	}
+
+
+	@Override
+	public Result addWebAddress(WebAddress webAddress) {
+		
+		return webAddressService.add(webAddress);
+	}
+
+	@Override
+	public Result addLanguage(Language language) {
+		
+		return languageService.add(language);
+	}
+	
+	
+	
+	
 }

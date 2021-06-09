@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.hmrs.business.abstracts.CandidateService;
-import kodlamaio.hmrs.business.abstracts.ResumeService;
+
 import kodlamaio.hmrs.business.abstracts.validations.ValidationService;
 import kodlamaio.hmrs.core.adapters.abstracts.UserCheckService;
 import kodlamaio.hmrs.core.adapters.concretes.ActivationAdapter;
@@ -19,7 +19,7 @@ import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.CandidateDao;
-import kodlamaio.hmrs.dataAccess.abstracts.ResumeDao;
+
 import kodlamaio.hmrs.dataAccess.abstracts.UserActivationDao;
 import kodlamaio.hmrs.entities.concretes.Candidate;
 
@@ -30,7 +30,7 @@ public class CandidateManager implements CandidateService {
 	private UserActivationDao userActivationDao;
 	private ValidationService<Candidate> validationService;
 	private UserCheckService userCheckService;
-	private ResumeDao resumeDao;
+	
 	private ActivationAdapter activationAdapter;
 	private EmailSenderAdapter emailSenderAdapter;
 	
@@ -38,14 +38,12 @@ public class CandidateManager implements CandidateService {
 	
 	@Autowired
 	public CandidateManager(CandidateDao candidateDao, UserActivationDao userActivationDao,
-			ValidationService<Candidate> validationService, UserCheckService userCheckService,
-			ResumeDao resumeDao, ActivationAdapter activationAdapter, EmailSenderAdapter emailSenderAdapter) {
+			ValidationService<Candidate> validationService, UserCheckService userCheckService, ActivationAdapter activationAdapter, EmailSenderAdapter emailSenderAdapter) {
 		super();
 		this.candidateDao = candidateDao;
 		this.userActivationDao = userActivationDao;
 		this.validationService = validationService;
 		this.userCheckService = userCheckService;
-		this.resumeDao = resumeDao;
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
 	}

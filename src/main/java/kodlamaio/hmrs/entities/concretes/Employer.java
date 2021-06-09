@@ -2,12 +2,17 @@ package kodlamaio.hmrs.entities.concretes;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -21,17 +26,31 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","jobPositionAdvertisements"})
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class Employer extends User{
+	@NotNull
+	@NotBlank
+	@Size(min = 2)
 	@Column(name="company_name")
 	private String companyName;
+	
 	@Column(name="web_address")
+	@NotNull
+	@NotBlank
+	@Size(min = 2)
 	private String webAddress;
+	
 	@Column(name="phone_number")
+	@NotNull
+	@NotBlank
+	@Size(min = 2)
 	private String phoneNumber;
-	@Column(name="is_activated",columnDefinition = "boolean default false")
-	private boolean isActivated;
-	@OneToMany(mappedBy="employer")
+	
+	@JsonIgnore
+	@Column(name="is_activated")
+	private boolean isActivated=false;
+	
+	@JsonIgnoreProperties(value = "employer")
+	@OneToMany(mappedBy="employer",cascade = CascadeType.ALL)
 	private List<JobPositionAdvertisement> jobPositionAdvertisements;
 }
