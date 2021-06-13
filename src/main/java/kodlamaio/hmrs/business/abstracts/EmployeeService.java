@@ -8,6 +8,7 @@ import kodlamaio.hmrs.entities.concretes.Employee;
 
 
 public interface EmployeeService extends UserService<Employee>{
-	public Result activateEmployer(int id);
+	Result changeEmployerActivation(int employerId);
+	Result changeJobAdvertisementActivation(int employerId);
 
 }

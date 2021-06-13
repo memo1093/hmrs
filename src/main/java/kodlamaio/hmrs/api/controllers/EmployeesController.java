@@ -3,6 +3,7 @@ package kodlamaio.hmrs.api.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import kodlamaio.hmrs.entities.concretes.Employee;
 
 @RestController
 @RequestMapping("/api/employees")
+@CrossOrigin
 public class EmployeesController {
 	private EmployeeService employeeService;
 
@@ -38,9 +40,13 @@ public class EmployeesController {
 		
 		return employeeService.add(user);
 	}
-	@PostMapping("/activate")
-	public Result activateEmployer(@RequestParam int id) {
-		return employeeService.activateEmployer(id);
+	@PostMapping("/changeActivation")
+	public Result changeActivation(@RequestParam int employerId) {
+		return employeeService.changeEmployerActivation(employerId);
+	}
+	@PostMapping("/changeJobAdvertisementActivation")
+	public Result changeJobAdvertisementActivation(int jobAdvertisementId) {
+		return employeeService.changeJobAdvertisementActivation(jobAdvertisementId);
 	}
 
 }

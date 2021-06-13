@@ -13,4 +13,5 @@ public interface JobPositionAdvertisementDao extends JpaRepository<JobPositionAd
 	@Query("From JobPositionAdvertisement where is_still_active=true order by release_date Desc ")
 	List<JobPositionAdvertisement> getByIsStillActiveTrueAndReleaseDate();
 	
+	
 }

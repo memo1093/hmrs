@@ -52,6 +52,10 @@ public class Candidate extends User{
 	@Column(name="birthdate")
 	private LocalDate birthDate;
 	
+	
+	@Column(name="profile_picture")
+	private String profilePicture;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="candidate",cascade = CascadeType.ALL)
 	private List<Resume> resumes;

@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.hmrs.business.abstracts.EmployeeService;
+import kodlamaio.hmrs.business.abstracts.EmployerService;
+import kodlamaio.hmrs.business.abstracts.JobPositionAdvertisementService;
+import kodlamaio.hmrs.business.abstracts.JobPositionService;
 import kodlamaio.hmrs.business.abstracts.validations.ValidationService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.ErrorResult;
@@ -14,27 +17,33 @@ import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.EmployeeDao;
-import kodlamaio.hmrs.dataAccess.abstracts.EmployerDao;
 import kodlamaio.hmrs.entities.concretes.Employee;
-import kodlamaio.hmrs.entities.concretes.Employer;
+
 
 
 @Service
 public class EmployeeManager implements EmployeeService{
 	
-	private EmployerDao employerDao;
-	private EmployeeDao employeeDao;
+	private EmployeeDao employeeDao;	
+	private EmployerService employerService;
+	private JobPositionAdvertisementService jobPositionAdvertisementService;
 	private ValidationService<Employee> validationSevice;
 	
 	
+
 	@Autowired
-	public EmployeeManager(EmployerDao employerDao, EmployeeDao employeeDao,
+	public EmployeeManager(EmployeeDao employeeDao, EmployerService employerService,
+			JobPositionAdvertisementService jobPositionAdvertisementService,
 			ValidationService<Employee> validationSevice) {
 		super();
-		this.employerDao = employerDao;
 		this.employeeDao = employeeDao;
+		this.employerService = employerService;
+		this.jobPositionAdvertisementService = jobPositionAdvertisementService;
 		this.validationSevice = validationSevice;
 	}
+
+	
+	
 
 	@Override
 	public DataResult<List<Employee>> getAll() {
@@ -64,13 +73,15 @@ public class EmployeeManager implements EmployeeService{
 	}
 
 	@Override
-	public Result activateEmployer(int id) {
-		if(!employerDao.findById(id).isPresent())
-			return new ErrorResult("Kullanıcı bulunamadı.");
-		Employer employer = employerDao.getOne(id);
-		employer.setActivated(true);
-		employerDao.save(employer);
-		return new SuccessResult("Kullanıcı aktif edildi!");
+	public Result changeEmployerActivation(int employerId) {
+		return employerService.changeEmployerActivation(employerId);
+	}
+
+	@Override
+	public Result changeJobAdvertisementActivation(int jobAdvertisementId) {
+		
+		
+		return jobPositionAdvertisementService.changeApproveJobPositionAdvetisement(jobAdvertisementId);
 	}
 
 }

@@ -38,7 +38,7 @@ import kodlamaio.hmrs.entities.dtos.TalentDto;
 import kodlamaio.hmrs.entities.dtos.WebAddressDto;
 
 @RestController
-@RequestMapping("/api/resume")
+@RequestMapping("/api/resumes")
 public class ResumesController {
 	private ResumeService resumeService;
 	private ModelMapper modelMapper;

@@ -1,17 +1,19 @@
 package kodlamaio.hmrs.business.concretes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kodlamaio.hmrs.business.abstracts.CandidateService;
-
 import kodlamaio.hmrs.business.abstracts.validations.ValidationService;
 import kodlamaio.hmrs.core.adapters.abstracts.UserCheckService;
 import kodlamaio.hmrs.core.adapters.concretes.ActivationAdapter;
 import kodlamaio.hmrs.core.adapters.concretes.EmailSenderAdapter;
+import kodlamaio.hmrs.core.utilities.imageServices.abstracts.ImageService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.ErrorDataResult;
 import kodlamaio.hmrs.core.utilities.results.ErrorResult;
@@ -19,7 +21,6 @@ import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.CandidateDao;
-
 import kodlamaio.hmrs.dataAccess.abstracts.UserActivationDao;
 import kodlamaio.hmrs.entities.concretes.Candidate;
 
@@ -33,12 +34,14 @@ public class CandidateManager implements CandidateService {
 	
 	private ActivationAdapter activationAdapter;
 	private EmailSenderAdapter emailSenderAdapter;
+	private ImageService imageService;
 	
 	
 	
 	@Autowired
 	public CandidateManager(CandidateDao candidateDao, UserActivationDao userActivationDao,
-			ValidationService<Candidate> validationService, UserCheckService userCheckService, ActivationAdapter activationAdapter, EmailSenderAdapter emailSenderAdapter) {
+			ValidationService<Candidate> validationService, UserCheckService userCheckService,
+			ActivationAdapter activationAdapter, EmailSenderAdapter emailSenderAdapter, ImageService imageService) {
 		super();
 		this.candidateDao = candidateDao;
 		this.userActivationDao = userActivationDao;
@@ -46,8 +49,10 @@ public class CandidateManager implements CandidateService {
 		this.userCheckService = userCheckService;
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
+		this.imageService = imageService;
 	}
 
+	
 	
 
 	@Override
@@ -89,6 +94,25 @@ public class CandidateManager implements CandidateService {
 		//Saves user
 		this.candidateDao.save(user);
 		return new SuccessResult(String.format("%s %s adlı kullanıcı başarıyla eklendi!",user.getFirstName(),user.getLastName()));
+		
+	}
+
+
+
+	@Override
+	public Result saveImage(MultipartFile file, int userId) {
+		//Gets Candidate
+	        Candidate candidate = candidateDao.getOne(userId);
+	      //Sets image name and path for cloudinary  (if image name exist in cloudinary, it will overwrite
+	        String imageName ="/profile-pictures/"+ candidate.getFirstName() +"_"+candidate.getFirstName()+"_"+userId; 
+	     //Uploads image to cloudinary   
+	        Map<?, String> uploader = (Map<?, String>)imageService.save(file,imageName).getData();
+	        //Saves image url to database.
+	        String imageUrl= uploader.get("url");
+	        candidate.setProfilePicture(imageUrl);
+	        candidateDao.save(candidate);
+	        
+	        return new SuccessResult("Kayıt Başarılı");
 		
 	}
 

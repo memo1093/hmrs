@@ -1,17 +1,21 @@
 package kodlamaio.hmrs.business.concretes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kodlamaio.hmrs.business.abstracts.EmployerService;
 import kodlamaio.hmrs.business.abstracts.validations.ValidationService;
 import kodlamaio.hmrs.core.adapters.concretes.ActivationAdapter;
 import kodlamaio.hmrs.core.adapters.concretes.EmailSenderAdapter;
+import kodlamaio.hmrs.core.utilities.imageServices.abstracts.ImageService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.ErrorDataResult;
+import kodlamaio.hmrs.core.utilities.results.ErrorResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
@@ -28,25 +32,27 @@ public class EmployerManager implements EmployerService{
 	private ValidationService<Employer> validationService;
 	private ActivationAdapter activationAdapter;
 	private EmailSenderAdapter emailSenderAdapter;
-	
+	private ImageService imageService;
 	
 	
 
 	
 
 	
-    @Autowired
-	public EmployerManager(EmployerDao employerDao, UserActivationDao userActivationDao,
+	@Autowired
+    public EmployerManager(EmployerDao employerDao, UserActivationDao userActivationDao,
 			ValidationService<Employer> validationService, ActivationAdapter activationAdapter,
-			EmailSenderAdapter emailSenderAdapter) {
+			EmailSenderAdapter emailSenderAdapter, ImageService imageService) {
 		super();
 		this.employerDao = employerDao;
 		this.userActivationDao = userActivationDao;
-		
 		this.validationService = validationService;
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
+		this.imageService = imageService;
 	}
+
+	
 
 	@Override
 	public DataResult<List<Employer>> getAll() {
@@ -80,6 +86,35 @@ public class EmployerManager implements EmployerService{
 		//Saves user
 		employerDao.save(user);
 		return new SuccessResult(String.format("%s şirketi başarıyla sisteme kaydedildi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName()));
+	}
+
+	@Override
+	public Result saveImage(MultipartFile file, int userId) {
+		//Gets Employer
+        Employer employer = employerDao.getOne(userId);
+      //Sets image name and path for cloudinary  (if image name exist in cloudinary, it will overwrite)
+        String imageName ="/company-pictures/"+ employer.getCompanyName() +"_"+userId; 
+     //Uploads image to cloudinary   
+        Map<?, String> uploader = (Map<?, String>)imageService.save(file,imageName).getData();
+        //Saves image url to database.
+        String imageUrl= uploader.get("url");
+        employer.setCompanyPicture(imageUrl);
+        employerDao.save(employer);
+        
+        return new SuccessResult("Kayıt Başarılı");
+	}
+
+
+
+	@Override
+	public Result changeEmployerActivation(int userId) {
+		if(!employerDao.findById(userId).isPresent())
+			return new ErrorResult("Kullanıcı bulunamadı.");
+		Employer employer = employerDao.getOne(userId);
+		
+		employer.setActivated(!employer.isActivated());
+		employerDao.save(employer);
+		return new SuccessResult("Kullanıcı onay durumu "+(employer.isActivated()?"'Onaylı'":"'Onay bekliyor'")+" olarak değiştirildi!");
 	}
 
 

@@ -3,6 +3,7 @@ package kodlamaio.hmrs.business.concretes;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.hmrs.business.abstracts.JobPositionAdvertisementService;
@@ -53,6 +54,26 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndCompanyName(String companyName) {
 		
 		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByIsStillActiveTrueAndEmployer_companyNameContains(companyName),"Veri listeleme başarılı");
+	}
+
+	@Override
+	public DataResult<List<JobPositionAdvertisement>> getAllSorted() {
+		Sort sort = Sort.by(Sort.Direction.DESC,"releaseDate");
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(sort),"Veri listeleme başarılı!");
+	}
+
+	@Override
+	public DataResult<JobPositionAdvertisement> getById(int id) {
+		
+		return new SuccessDataResult<JobPositionAdvertisement>(jobPositionAdvertisementDao.findById(id).get(),"İş ilanları listeleme işlemi başarılı!");
+	}
+
+	@Override
+	public Result changeApproveJobPositionAdvetisement(int id) {
+		JobPositionAdvertisement jobPositionAdvertisement= jobPositionAdvertisementDao.getOne(id);
+		jobPositionAdvertisement.setApproved(!jobPositionAdvertisement.isApproved());
+		jobPositionAdvertisementDao.save(jobPositionAdvertisement);
+		return new SuccessResult("İş ilanı onay durumu '"+jobPositionAdvertisement.isApproved()+"' olarak değiştirildi!");
 	}
 
 	
