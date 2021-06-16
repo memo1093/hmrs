@@ -1,35 +1,20 @@
 package kodlamaio.hmrs.api.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import kodlamaio.hmrs.business.abstracts.ResumeService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
-import kodlamaio.hmrs.core.utilities.results.ErrorDataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
-import kodlamaio.hmrs.entities.concretes.Graduation;
-import kodlamaio.hmrs.entities.concretes.JobExperience;
-import kodlamaio.hmrs.entities.concretes.Language;
+import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.Resume;
-import kodlamaio.hmrs.entities.concretes.Talent;
-import kodlamaio.hmrs.entities.concretes.WebAddress;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -39,7 +24,7 @@ import kodlamaio.hmrs.entities.dtos.WebAddressDto;
 
 @RestController
 @RequestMapping("/api/resumes")
-public class ResumesController {
+public class ResumesController extends ValidationHandler {
 	private ResumeService resumeService;
 	private ModelMapper modelMapper;
 	
@@ -49,12 +34,7 @@ public class ResumesController {
 		this.resumeService = resumeService;
 		this.modelMapper = modelMapper;
 	}
-	@PostMapping("/add")
-	public Result add(@RequestBody @Valid Resume resume) 
-	{
-		
-		return resumeService.add(resume);
-	}
+
 	@PostMapping("/addResume")
 	public Result addResume(@RequestBody @Valid ResumeDto resumeDto) 
 	{
@@ -76,43 +56,51 @@ public class ResumesController {
 	DataResult<List<Resume>> getAll(){
 		return resumeService.getAll();
 	};
+	@GetMapping("/getByTalentName")
+	public DataResult<List<Resume>> getByTalentName(@RequestParam String talentName){
+		return resumeService.getByTalentName(talentName);
+	}
+	@GetMapping("/getByLanguageName")
+	public DataResult<List<Resume>> getByLanguageName(@RequestParam String language){
+		return resumeService.getByLanguageName(language);
+	}
+	@GetMapping("/getByGraduationDegree")
+	public DataResult<List<Resume>> getByGraduationDegree(@RequestParam String degree){
+		return resumeService.getByGraduationDegree(degree);
+	}
+	@GetMapping("/getByWorkedJobPosition")
+	public DataResult<List<Resume>> getByWorkedJobPosition(@RequestParam String position){
+		return resumeService.getByWorkedJobPosition(position);
+	}
+	
 	@PostMapping("/addGraduation")
 	public Result addGraduation(@RequestBody @Valid GraduationDto graduationDto) {
-		Graduation graduation = modelMapper.map(graduationDto, Graduation.class);
-		return resumeService.addGraduation(graduation);
+		
+		return resumeService.addGraduation(graduationDto);
 	}
 	@PostMapping("/addJobExperience")
 	public Result addJobExperience(@RequestBody @Valid JobExperienceDto jobExperienceDto) {
-		JobExperience jobExperience = modelMapper.map(jobExperienceDto, JobExperience.class);
-		return resumeService.addJobExperience(jobExperience);
+		
+		return resumeService.addJobExperience(jobExperienceDto);
 	}
 	@PostMapping("/addTalent")
 	public Result addTalent(@RequestBody @Valid TalentDto talentDto) {
-		Talent talent = modelMapper.map(talentDto, Talent.class);
-		return resumeService.addTalent(talent);
 		
+		return resumeService.addTalent(talentDto);		
 	}
 	@PostMapping("/addWebAddress")
 	public Result addWebAddress(@RequestBody @Valid WebAddressDto webAddressDto) {
-		WebAddress webAddress = modelMapper.map(webAddressDto, WebAddress.class);
-		return resumeService.addWebAddress(webAddress);
+		
+		return resumeService.addWebAddress(webAddressDto);
 		
 	}
 	@PostMapping("/addLanguage")
 	public Result addLanguage(@RequestBody @Valid LanguageDto languageDto) {
-		Language language = modelMapper.map(languageDto, Language.class);
-		return resumeService.addLanguage(language);
+		
+		return resumeService.addLanguage(languageDto);
 	}
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exceptions) {
-		Map<String, String> validationErrors = new HashMap<String, String>();
-		for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
-			validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-		}
-		ErrorDataResult<Object> errors = new ErrorDataResult<Object>(validationErrors, "Validation Errors");
-		return errors;
-	}
+	
+	
 	
 	
 	

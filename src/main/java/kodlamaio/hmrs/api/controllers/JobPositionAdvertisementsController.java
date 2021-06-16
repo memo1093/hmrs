@@ -2,7 +2,8 @@ package kodlamaio.hmrs.api.controllers;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,24 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 import kodlamaio.hmrs.business.abstracts.JobPositionAdvertisementService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
+import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.JobPositionAdvertisement;
 import kodlamaio.hmrs.entities.dtos.JobPositionAdvertisementDto;
 
 @RestController
 @RequestMapping("/api/jobAdvertisements")
 @CrossOrigin
-public class JobPositionAdvertisementsController {
+public class JobPositionAdvertisementsController extends ValidationHandler {
 	private JobPositionAdvertisementService jobPositionAdvertisementService;
-	private ModelMapper modelMapper;
+	
 	@Autowired
-	public JobPositionAdvertisementsController(JobPositionAdvertisementService jobPositionAdvertisementService,
-			ModelMapper modelMapper) {
+	public JobPositionAdvertisementsController(JobPositionAdvertisementService jobPositionAdvertisementService
+			) {
 		super();
 		this.jobPositionAdvertisementService = jobPositionAdvertisementService;
-		this.modelMapper = modelMapper;
 	}
 	
-
 	@GetMapping("/getAll")
 	public DataResult<List<JobPositionAdvertisement>> getAll()
 	{
@@ -43,11 +43,10 @@ public class JobPositionAdvertisementsController {
 		return jobPositionAdvertisementService.getAllSorted();
 	}
 	@PostMapping("/add")
-	public Result add(@RequestBody JobPositionAdvertisementDto jobPositionAdvertisementDto)
+	public Result add(@RequestBody @Valid JobPositionAdvertisementDto jobPositionAdvertisementDto)
 	{
-		JobPositionAdvertisement jobPositionAdvertisement=modelMapper.map(jobPositionAdvertisementDto, JobPositionAdvertisement.class);
-		return jobPositionAdvertisementService.add(jobPositionAdvertisement);
 		
+		return jobPositionAdvertisementService.add(jobPositionAdvertisementDto);		
 	}
 	@GetMapping("/getActiveJobs")
 	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrue()
@@ -68,7 +67,10 @@ public class JobPositionAdvertisementsController {
 	public DataResult<JobPositionAdvertisement> getById(@RequestParam int id){
 		return jobPositionAdvertisementService.getById(id);
 	}
-	
+	@GetMapping("/getByJobPositionId")
+	public DataResult<List<JobPositionAdvertisement>> getByJobPositionId(int id){
+		return jobPositionAdvertisementService.getByJobPosition(id);
+	}
 	
 
 	

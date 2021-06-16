@@ -2,7 +2,8 @@ package kodlamaio.hmrs.api.controllers;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,21 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 import kodlamaio.hmrs.business.abstracts.JobPositionService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
+import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.JobPosition;
 import kodlamaio.hmrs.entities.dtos.JobPositionDto;
 
 @RestController
 @RequestMapping("/api/positions")
 @CrossOrigin
-public class JobPositionsController {
+public class JobPositionsController extends ValidationHandler {
 	private JobPositionService jobPositionService;
-	private ModelMapper modelMapper;
+
 	
 	@Autowired
-	public JobPositionsController(JobPositionService jobPositionService, ModelMapper modelMapper) {
+	public JobPositionsController(JobPositionService jobPositionService) {
 		super();
 		this.jobPositionService = jobPositionService;
-		this.modelMapper = modelMapper;
+		
 	}
 	
 	@GetMapping("/getAll")
@@ -40,10 +42,9 @@ public class JobPositionsController {
 		return jobPositionService.get(id);
 	}
 	@PostMapping("/add")
-	public Result AddJobPosition(@RequestBody JobPositionDto jobPositionDto) {
-		JobPosition jobPosition = modelMapper.map(jobPositionDto, JobPosition.class);
+	public Result AddJobPosition(@RequestBody @Valid JobPositionDto jobPositionDto) {
 		
-		return jobPositionService.add(jobPosition);
+		return jobPositionService.add(jobPositionDto);
 	}
 	
 }

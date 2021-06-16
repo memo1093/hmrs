@@ -31,4 +31,12 @@ public class LanguageManager implements LanguageService {
 		return new SuccessResult("Dil ekleme işlemi başarılı!");
 	}
 
+	@Override
+	public DataResult<List<Language>> getByResumeId(int resumeId) {
+		
+		return new SuccessDataResult<List<Language>>(languageDao.getByResume_Id(resumeId), "Özgeçmişe göre dillerin getirilmesi işlemi başarılı!");
+	}
+
+	
+
 }

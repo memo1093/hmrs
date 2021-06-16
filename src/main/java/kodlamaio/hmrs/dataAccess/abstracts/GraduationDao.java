@@ -9,6 +9,7 @@ import kodlamaio.hmrs.entities.concretes.Graduation;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 
 public interface GraduationDao extends JpaRepository<Graduation,Integer>{
+	
 	List<Graduation> getBySchoolNameContains(String schoolName);
 	List<Graduation> getBySchoolDegree(String degree);
 	List<Graduation> getBySchoolDepartment(String department);

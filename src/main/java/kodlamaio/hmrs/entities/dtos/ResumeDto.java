@@ -3,7 +3,8 @@ package kodlamaio.hmrs.entities.dtos;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,14 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResumeDto {
 	
-	@NotBlank
-	@NotNull
-	@Size(min = 2)
+	@NotBlank(message = "Özet bilgi boş bırakılamaz")
+	@NotNull(message = "Özet bilgi boş bırakılamaz")
+	@Length(min = 10,message = "Özet bilgi minimum 10 karakter içermelidir")
 	private String coverLetter;
-	@NotBlank
-	@NotNull
-	@Size(min = 2)
+	
+	@NotBlank(message = "Özet bilgi boş bırakılamaz")
+	@NotNull(message = "Özet bilgi boş bırakılamaz")
+	@Length(min = 2,message = "Özet bilgi minimum 2 karakter içermelidir")
 	private String profilePicture;
+	
 	@Min(1)
 	private int candidateId;
 }

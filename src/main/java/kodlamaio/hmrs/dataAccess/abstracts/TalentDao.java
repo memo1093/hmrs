@@ -8,4 +8,5 @@ import kodlamaio.hmrs.entities.concretes.Talent;
 
 public interface TalentDao extends JpaRepository<Talent,Integer>{
 	List<Talent> getByNameContains(String name);
+	List<Talent> getByResume_Id(int resumeId);
 }

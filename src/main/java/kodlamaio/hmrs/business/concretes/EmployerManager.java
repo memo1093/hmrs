@@ -2,8 +2,8 @@ package kodlamaio.hmrs.business.concretes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +22,7 @@ import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.EmployerDao;
 import kodlamaio.hmrs.dataAccess.abstracts.UserActivationDao;
 import kodlamaio.hmrs.entities.concretes.Employer;
+import kodlamaio.hmrs.entities.dtos.EmployerDto;
 
 
 @Service
@@ -33,16 +34,13 @@ public class EmployerManager implements EmployerService{
 	private ActivationAdapter activationAdapter;
 	private EmailSenderAdapter emailSenderAdapter;
 	private ImageService imageService;
+	private ModelMapper modelMapper;
 	
-	
-
-	
-
 	
 	@Autowired
-    public EmployerManager(EmployerDao employerDao, UserActivationDao userActivationDao,
+	public EmployerManager(EmployerDao employerDao, UserActivationDao userActivationDao,
 			ValidationService<Employer> validationService, ActivationAdapter activationAdapter,
-			EmailSenderAdapter emailSenderAdapter, ImageService imageService) {
+			EmailSenderAdapter emailSenderAdapter, ImageService imageService, ModelMapper modelMapper) {
 		super();
 		this.employerDao = employerDao;
 		this.userActivationDao = userActivationDao;
@@ -50,7 +48,10 @@ public class EmployerManager implements EmployerService{
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
 		this.imageService = imageService;
+		this.modelMapper = modelMapper;
 	}
+
+   
 
 	
 
@@ -61,28 +62,32 @@ public class EmployerManager implements EmployerService{
 	}
 
 	@Override
-	public DataResult<Optional<Employer>> get(int id) {
-		Optional<Employer> data = employerDao.findById(id);
-		if (id==0)
-			return new ErrorDataResult<Optional<Employer>>(null,"Id girilmedi.");
-		if (!data.isPresent())
-			return new ErrorDataResult<Optional<Employer>>(null,"Kullanıcı bulunamadı.");
+	public DataResult<Employer> get(int id) {
 		
-		return new SuccessDataResult<Optional<Employer>>(data,"Veri çekme işlemi başarılı!");
+		if (id==0)
+			return new ErrorDataResult<Employer>(null,"Id girilmedi.");
+				
+		return new SuccessDataResult<Employer>(employerDao.getOne(id),"Veri çekme işlemi başarılı!");
 
 		
 	}
 
 	@Override
-	public Result add(Employer user) {
+	public Result add(EmployerDto userDto) {
+		//Mapping
+		Employer user = modelMapper.map(userDto, Employer.class);
+		
 		//User validation
 		if (validationService.validateUser(user).isSuccess()==false)
 			return validationService.validateUser(user);
+		
 		//User isActivated field sets to false
 		user.setActivated(false);
+		
 		//Sets a new user activation codes and sends email.
 		this.userActivationDao.save(activationAdapter.generateActivationCode());
 		this.emailSenderAdapter.sendEmail(activationAdapter.getActivationCode());
+		
 		//Saves user
 		employerDao.save(user);
 		return new SuccessResult(String.format("%s şirketi başarıyla sisteme kaydedildi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName()));
@@ -90,12 +95,16 @@ public class EmployerManager implements EmployerService{
 
 	@Override
 	public Result saveImage(MultipartFile file, int userId) {
+		
 		//Gets Employer
         Employer employer = employerDao.getOne(userId);
-      //Sets image name and path for cloudinary  (if image name exist in cloudinary, it will overwrite)
+        //Sets image name and path for cloudinary  (if image name exist in cloudinary, it will overwrite)
+        
         String imageName ="/company-pictures/"+ employer.getCompanyName() +"_"+userId; 
-     //Uploads image to cloudinary   
+        
+        //Uploads image to cloudinary   
         Map<?, String> uploader = (Map<?, String>)imageService.save(file,imageName).getData();
+        
         //Saves image url to database.
         String imageUrl= uploader.get("url");
         employer.setCompanyPicture(imageUrl);
@@ -108,14 +117,19 @@ public class EmployerManager implements EmployerService{
 
 	@Override
 	public Result changeEmployerActivation(int userId) {
+		
 		if(!employerDao.findById(userId).isPresent())
 			return new ErrorResult("Kullanıcı bulunamadı.");
+		
 		Employer employer = employerDao.getOne(userId);
 		
 		employer.setActivated(!employer.isActivated());
 		employerDao.save(employer);
 		return new SuccessResult("Kullanıcı onay durumu "+(employer.isActivated()?"'Onaylı'":"'Onay bekliyor'")+" olarak değiştirildi!");
 	}
+
+
+
 
 
 

@@ -10,15 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,16 +22,13 @@ import lombok.NoArgsConstructor;
 @Table(name="job_position_advertisements")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","employer","jobPosition","city"})
+
 public class JobPositionAdvertisement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
-	@NotNull
-	@NotBlank
-	@Size(min = 10)
 	@Column(name="description")
 	private String description;
 	
@@ -47,13 +38,11 @@ public class JobPositionAdvertisement {
 	@Column(name="max_salary")
 	private BigDecimal maxSalary;
 	
-	@NotNull
-	@NotBlank
+	
 	@Column(name="active_positions")
 	private int activePositions;
 	
-	@NotNull
-	@NotBlank
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name="last_application_date")
 	private LocalDate lastApplicationDate;

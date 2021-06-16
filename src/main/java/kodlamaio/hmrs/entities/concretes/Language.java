@@ -8,10 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,17 +25,13 @@ public class Language {
 	@Column(name="id")
 	private int id;
 	
-	@NotNull
-	@NotBlank
 	@Column(name="language")
 	private String language;
-	
-	
-	@Min(1)
-	@Max(value = 5,message = "Derece 1-5 arasında olmalıdır.")
+		
 	@Column(name="rate")
 	private int rate;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="resume_id")
 	private Resume resume;

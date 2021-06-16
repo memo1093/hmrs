@@ -8,5 +8,6 @@ import kodlamaio.hmrs.entities.concretes.Language;
 
 public interface LanguageDao extends JpaRepository<Language, Integer>{
 	List<Language> getByLanguageContains(String name);
+	List<Language> getByResume_Id(int id);
 
 }

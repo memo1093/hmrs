@@ -26,8 +26,10 @@ public class JobTime {
 	@GeneratedValue
 	@Column(name="id")
 	private int id;
+	
 	@Column(name="type")
 	private String type;
+	
 	@OneToMany(mappedBy = "jobTime")
 	private List<JobPositionAdvertisement> jobPositionAdvertisements;
 

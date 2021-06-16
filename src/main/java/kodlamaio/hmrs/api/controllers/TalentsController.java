@@ -17,9 +17,10 @@ public class TalentsController {
 	@Autowired
 	private TalentService talentService;
 	
-	@GetMapping("/getByName")
-	public DataResult<List<Talent>> getByNameContains(String name) {
+	
+	@GetMapping("/getByResumeId")
+	public DataResult<List<Talent>> getByResumeId(int id) {
 		
-		return talentService.getByNameContains(name);
+		return talentService.getByResumeId(id);
 	}
 }

@@ -1,8 +1,5 @@
 package kodlamaio.hmrs.entities.dtos;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -17,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JobPositionDto {
 	
-	@NotBlank
-	@NotNull
-	@Length(min = 2)
+	@NotBlank(message = "Pozisyon ismi boş bırakılamaz")
+	@NotNull(message = "Pozisyon ismi boş bırakılamaz")
+	@Length(min = 2,message = "Pozisyon adı en az iki karakter içermelidir")
 	private String position;
 	
 }

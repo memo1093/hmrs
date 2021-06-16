@@ -26,6 +26,7 @@ public class JobType {
 	@GeneratedValue
 	@Column(name="id")
 	private int id;
+	
 	@Column(name="type")
 	private String type;
 	

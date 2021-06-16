@@ -31,4 +31,10 @@ public class TalentManager implements TalentService {
 		return new SuccessResult("Veri ekleme işlemi başarılı!");
 	}
 
+	@Override
+	public DataResult<List<Talent>> getByResumeId(int resumeId) {
+		
+		return new SuccessDataResult<List<Talent>>(talentDao.getByResume_Id(resumeId));
+	}
+
 }

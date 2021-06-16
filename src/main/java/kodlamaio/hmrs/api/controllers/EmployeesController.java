@@ -1,7 +1,8 @@
 package kodlamaio.hmrs.api.controllers;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import kodlamaio.hmrs.business.abstracts.EmployeeService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
+import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.Employee;
 
 @RestController
 @RequestMapping("/api/employees")
 @CrossOrigin
-public class EmployeesController {
+public class EmployeesController extends ValidationHandler{
 	private EmployeeService employeeService;
 
 	public EmployeesController(EmployeeService employeeService) {
@@ -32,11 +34,11 @@ public class EmployeesController {
 		return employeeService.getAll();
 	}
 	@GetMapping("/get")
-	public DataResult<Optional<Employee>> get(@RequestParam int id){
+	public DataResult<Employee> get(@RequestParam int id){
 		return employeeService.get(id);
 	}
 	@PostMapping("/add")
-	public Result add(@RequestBody Employee user) {
+	public Result add(@RequestBody @Valid Employee user) {
 		
 		return employeeService.add(user);
 	}

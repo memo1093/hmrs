@@ -5,10 +5,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,20 +18,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GraduationDto {
 	
-	@NotNull(message = "Okul adı boş bırakılamaz.")
-	@NotBlank(message = "Okul adı boş bırakılamaz.")
-	@Size(min = 2)
+	@NotNull(message = "Okul adı boş bırakılamaz")
+	@NotBlank(message = "Okul adı boş bırakılamaz")
+	@Length(min = 2,message = "Okul adı minimum 2 haneli olmalıdır")
 	private String schoolName;
-	@NotNull(message = "Okul bölümü boş bırakılamaz.")
-	@NotBlank(message = "Okul bölümü boş bırakılamaz.")
-	@Size(min = 2)
-	private String schoolDepartment;
-	@NotNull(message = "Mezuniyet derecesi boş bırakılamaz.")
-	@NotBlank(message = "Mezuniyet derecesi boş bırakılamaz.")
-	@Size(min = 2)
-	private String schoolDegree;
-	private boolean stillStudying=false;
 	
+	@NotNull(message = "Okul bölümü boş bırakılamaz")
+	@NotBlank(message = "Okul bölümü boş bırakılamaz")
+	@Length(min = 2)
+	private String schoolDepartment;
+	
+	@NotNull(message = "Mezuniyet derecesi boş bırakılamaz")
+	@NotBlank(message = "Mezuniyet derecesi boş bırakılamaz")
+	@Length(min = 2,message="Mezuniyet derece adı minimum 2 haneli olmalıdır")
+	private String schoolDegree;
+	
+	private boolean stillStudying;
+	@NotNull(message = "Başlangıç tarihi boş bırakılamaz")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate startDate;
 

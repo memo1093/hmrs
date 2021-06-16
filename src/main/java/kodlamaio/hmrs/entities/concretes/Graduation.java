@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,29 +28,18 @@ public class Graduation {
 	@JsonIgnore
 	private int id;
 	
-	@NotNull
-	@NotBlank
-	@Size(min = 2)
 	@Column(name="school_name")
 	private String schoolName;
 	
-	@NotNull
-	@NotBlank
-	@Size(min = 2)
 	@Column(name="school_department")
 	private String schoolDepartment;
 	
-	@NotNull
-	@NotBlank
-	@Size(min = 2)
 	@Column(name="school_degree")
 	private String schoolDegree;	
 	
 	@Column(name="still_studying")
-	private boolean stillStudying=false;
+	private boolean stillStudying;
 	
-	@NotNull
-	@NotBlank
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name="start_date")
 	private LocalDate startDate;
