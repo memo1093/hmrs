@@ -14,6 +14,7 @@ public interface JobPositionAdvertisementService {
 	DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndByDate();
 	DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndCompanyName(String companyName);
 	DataResult<List<JobPositionAdvertisement>> getByJobPosition(int id);
+	DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionNameSorted(String position);
 	DataResult<JobPositionAdvertisement> getById(int id);
 	Result add(JobPositionAdvertisementDto jobPositionAdvertisementDto);
 	Result changeApproveJobPositionAdvetisement(int jobAdvertisemementId);

@@ -17,6 +17,8 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.JobPosition;
+import kodlamaio.hmrs.entities.concretes.JobTime;
+import kodlamaio.hmrs.entities.concretes.JobType;
 import kodlamaio.hmrs.entities.dtos.JobPositionDto;
 
 @RestController
@@ -38,9 +40,20 @@ public class JobPositionsController extends ValidationHandler {
 		return jobPositionService.getAll();
 	}
 	@GetMapping("/get")
-	public Result JobPosition(int id) {
+	public DataResult<JobPosition> JobPosition(int id) {
 		return jobPositionService.get(id);
 	}
+	@GetMapping("/getAllJobTypes")
+	public DataResult<List<JobType>> getAllJobTypes() {
+		return jobPositionService.getAllJobTypes();
+	}
+	
+	@GetMapping("/getAllJobTimes")
+	public DataResult<List<JobTime>> JobPosition() {
+		return jobPositionService.getAllJobTimes();
+	}
+	
+	
 	@PostMapping("/add")
 	public Result AddJobPosition(@RequestBody @Valid JobPositionDto jobPositionDto) {
 		

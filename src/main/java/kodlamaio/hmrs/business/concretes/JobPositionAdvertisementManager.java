@@ -92,6 +92,14 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 		
 		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByJobPosition_Id(id),"Id ye göre verilerin getirme işlemi başarılı!");
 	}
+
+
+
+	@Override
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionNameSorted(String position) {
+		
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByIsStillActiveTrueAndJobPosition_positionContains(position));
+	}
 	
 
 	

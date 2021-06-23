@@ -71,6 +71,10 @@ public class JobPositionAdvertisementsController extends ValidationHandler {
 	public DataResult<List<JobPositionAdvertisement>> getByJobPositionId(int id){
 		return jobPositionAdvertisementService.getByJobPosition(id);
 	}
+	@GetMapping("/getByIsStillActiveAndPositionNameSorted")
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionNameSorted(@RequestParam String position){
+		return jobPositionAdvertisementService.getByIsStillActiveAndPositionNameSorted(position);
+	}
 	
 
 	

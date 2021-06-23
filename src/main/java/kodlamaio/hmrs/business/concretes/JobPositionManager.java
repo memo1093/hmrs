@@ -14,21 +14,32 @@ import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.JobPositionDao;
+import kodlamaio.hmrs.dataAccess.abstracts.JobTimeDao;
+import kodlamaio.hmrs.dataAccess.abstracts.JobTypeDao;
 import kodlamaio.hmrs.entities.concretes.JobPosition;
+import kodlamaio.hmrs.entities.concretes.JobTime;
+import kodlamaio.hmrs.entities.concretes.JobType;
 import kodlamaio.hmrs.entities.dtos.JobPositionDto;
 
 @Service
 public class JobPositionManager implements JobPositionService {
 
 	private JobPositionDao jobPositionDao;
+	private JobTimeDao jobTimeDao;
+	private JobTypeDao jobTypeDao;
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	public JobPositionManager(JobPositionDao jobPositionDao, ModelMapper modelMapper) {
+	public JobPositionManager(JobPositionDao jobPositionDao, JobTimeDao jobTimeDao, JobTypeDao jobTypeDao,
+			ModelMapper modelMapper) {
 		super();
 		this.jobPositionDao = jobPositionDao;
+		this.jobTimeDao = jobTimeDao;
+		this.jobTypeDao = jobTypeDao;
 		this.modelMapper = modelMapper;
 	}
+
+	
 
 	
 
@@ -59,6 +70,22 @@ public class JobPositionManager implements JobPositionService {
 		jobPositionDao.save(jobPosition);
 		
 		return new SuccessResult(String.format("%s adlı pozisyonun kayıt işlemi başarılı!",jobPosition.getPosition()));
+	}
+
+
+
+	@Override
+	public DataResult<List<JobType>> getAllJobTypes() {
+		
+		return new SuccessDataResult<List<JobType>>(jobTypeDao.findAll(),"Veri getirme işlemi başarılı!");
+	}
+
+
+
+	@Override
+	public DataResult<List<JobTime>> getAllJobTimes() {
+		
+		return new SuccessDataResult<List<JobTime>>(jobTimeDao.findAll(),"Veri getirme işlemi başarılı!");
 	}
 
 	

@@ -44,7 +44,7 @@ public class CandidatesController extends ValidationHandler {
 		return this.candidateService.add(candidateDto);
 	}
 	@PostMapping("/addProfilePicture")
-	public Result addCandidates(@RequestBody MultipartFile file,@RequestParam int userId){
+	public Result addCandidatesImage(@RequestBody MultipartFile file,@RequestParam int userId){
 		return this.candidateService.saveImage(file, userId);
 	}
 	
