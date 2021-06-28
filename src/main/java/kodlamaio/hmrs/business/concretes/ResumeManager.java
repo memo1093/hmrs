@@ -72,7 +72,7 @@ public class ResumeManager implements ResumeService{
 	@Override
 	public DataResult<Resume> getById(int id) {
 		
-		return new SuccessDataResult<Resume>(resumeDao.getOne(id),"Özgeçmiş getirme başarılı!");
+		return new SuccessDataResult<Resume>(resumeDao.findById(id).get(),"Özgeçmiş getirme başarılı!");
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class ResumeManager implements ResumeService{
 	}
 
 	@Override
-	public Result addGraduation(GraduationDto graduationDto) {
+	public Result addOrUpdateGraduation(GraduationDto graduationDto) {
 		
 		Graduation graduation = modelMapper.map(graduationDto, Graduation.class);		
 		return graduationService.add(graduation);
@@ -91,14 +91,14 @@ public class ResumeManager implements ResumeService{
 
 
 	@Override
-	public Result addJobExperience(JobExperienceDto jobExperienceDto) {
+	public Result addOrUpdateJobExperience(JobExperienceDto jobExperienceDto) {
 		
 		JobExperience jobExperience = modelMapper.map(jobExperienceDto, JobExperience.class);
 		return jobExperienceService.add(jobExperience);
 	}
 
 	@Override
-	public Result addTalent(TalentDto talentDto) {
+	public Result addOrUpdateTalent(TalentDto talentDto) {
 		Talent talent = modelMapper.map(talentDto, Talent.class);
 		return talentService.add(talent);
 		
@@ -106,13 +106,13 @@ public class ResumeManager implements ResumeService{
 
 
 	@Override
-	public Result addWebAddress(WebAddressDto webAddressDto) {
+	public Result addOrUpdateWebAddress(WebAddressDto webAddressDto) {
 		WebAddress webAddress = modelMapper.map(webAddressDto, WebAddress.class);
 		return webAddressService.add(webAddress);
 	}
 
 	@Override
-	public Result addLanguage(LanguageDto languageDto) {
+	public Result addOrUpdateLanguage(LanguageDto languageDto) {
 		Language language = modelMapper.map(languageDto, Language.class);
 		return languageService.add(language);
 	}
@@ -122,8 +122,9 @@ public class ResumeManager implements ResumeService{
 
 
 	@Override
-	public Result addResume(ResumeDto resumeDto) {
+	public Result addOrUpdateResume(ResumeDto resumeDto) {
 		Resume resume = modelMapper.map(resumeDto, Resume.class);
+		
 		resumeDao.save(resume);
 		return new SuccessResult("Özgeçmiş kaydetme işlemi başarılı!");
 	}

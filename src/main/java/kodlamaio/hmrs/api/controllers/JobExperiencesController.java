@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import kodlamaio.hmrs.business.abstracts.JobExperienceService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
+import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.entities.concretes.JobExperience;
 
 @RestController
@@ -28,5 +29,10 @@ public class JobExperiencesController {
 	@GetMapping("/getByPosition")
 	DataResult<List<JobExperience>> getByPosition(@RequestParam String name){
 		return jobExperienceService.getByPositionContains(name);
+	}
+	@GetMapping("/getByResumeId")
+	public DataResult<List<JobExperience>> getByResumeId(int resumeId) {
+		
+		return jobExperienceService.getByResumeId(resumeId);
 	}
 }

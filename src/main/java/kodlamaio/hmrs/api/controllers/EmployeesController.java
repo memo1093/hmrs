@@ -1,9 +1,8 @@
 package kodlamaio.hmrs.api.controllers;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +16,7 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.Employee;
+import kodlamaio.hmrs.entities.dtos.EmployeeDto;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -29,18 +29,18 @@ public class EmployeesController extends ValidationHandler{
 		this.employeeService = employeeService;
 	}
 	@GetMapping("/getAll")
-	public DataResult<List<Employee>> getAll() {
+	public DataResult<Page<Employee>> getAll(@RequestParam int pageNo, @RequestParam int pageSize) {
 		
-		return employeeService.getAll();
+		return employeeService.getAll(pageNo,pageSize);
 	}
 	@GetMapping("/get")
 	public DataResult<Employee> get(@RequestParam int id){
 		return employeeService.get(id);
 	}
-	@PostMapping("/add")
-	public Result add(@RequestBody @Valid Employee user) {
+	@PostMapping("/addOrUpdate")
+	public Result addOrUpdate(@RequestBody @Valid EmployeeDto userDto) {
 		
-		return employeeService.add(user);
+		return employeeService.addOrUpdate(userDto);
 	}
 	@PostMapping("/changeActivation")
 	public Result changeActivation(@RequestParam int employerId) {

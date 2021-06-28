@@ -10,4 +10,5 @@ public interface JobExperienceDao extends JpaRepository<JobExperience, Integer>{
 	List<JobExperience> getByCompanyNameContains(String name);
 	List<JobExperience> getByStillWorkingFalse();
 	List<JobExperience> getByPositionContains(String name);
+	List<JobExperience> getByResume_Id(int id);
 }

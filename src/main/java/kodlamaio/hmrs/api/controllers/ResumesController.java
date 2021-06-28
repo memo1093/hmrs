@@ -2,8 +2,8 @@ package kodlamaio.hmrs.api.controllers;
 
 import java.util.List;
 import javax.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,22 +24,16 @@ import kodlamaio.hmrs.entities.dtos.WebAddressDto;
 
 @RestController
 @RequestMapping("/api/resumes")
+@CrossOrigin
 public class ResumesController extends ValidationHandler {
-	private ResumeService resumeService;
-	private ModelMapper modelMapper;
-	
 	@Autowired
-	public ResumesController(ResumeService resumeService, ModelMapper modelMapper) {
-		super();
-		this.resumeService = resumeService;
-		this.modelMapper = modelMapper;
-	}
+	private ResumeService resumeService;
 
 	@PostMapping("/addResume")
 	public Result addResume(@RequestBody @Valid ResumeDto resumeDto) 
 	{
-		Resume resume = modelMapper.map(resumeDto, Resume.class);
-		return resumeService.add(resume);
+		
+		return resumeService.addOrUpdateResume(resumeDto);
 	}
 	@GetMapping("/getByCandidateId")
 	public DataResult<List<Resume>> getByCandidateId(@RequestParam int id)
@@ -73,31 +67,31 @@ public class ResumesController extends ValidationHandler {
 		return resumeService.getByWorkedJobPosition(position);
 	}
 	
-	@PostMapping("/addGraduation")
-	public Result addGraduation(@RequestBody @Valid GraduationDto graduationDto) {
+	@PostMapping("/addOrUpdateGraduation")
+	public Result addOrUpdateGraduation(@RequestBody @Valid GraduationDto graduationDto) {
 		
-		return resumeService.addGraduation(graduationDto);
+		return resumeService.addOrUpdateGraduation(graduationDto);
 	}
-	@PostMapping("/addJobExperience")
-	public Result addJobExperience(@RequestBody @Valid JobExperienceDto jobExperienceDto) {
+	@PostMapping("/addOrUpdateJobExperience")
+	public Result addOrUpdateJobExperience(@RequestBody @Valid JobExperienceDto jobExperienceDto) {
 		
-		return resumeService.addJobExperience(jobExperienceDto);
+		return resumeService.addOrUpdateJobExperience(jobExperienceDto);
 	}
-	@PostMapping("/addTalent")
-	public Result addTalent(@RequestBody @Valid TalentDto talentDto) {
+	@PostMapping("/addOrUpdateTalent")
+	public Result addOrUpdateTalent(@RequestBody @Valid TalentDto talentDto) {
 		
-		return resumeService.addTalent(talentDto);		
+		return resumeService.addOrUpdateTalent(talentDto);		
 	}
-	@PostMapping("/addWebAddress")
-	public Result addWebAddress(@RequestBody @Valid WebAddressDto webAddressDto) {
+	@PostMapping("/addOrUpdateWebAddress")
+	public Result addOrUpdateWebAddress(@RequestBody @Valid WebAddressDto webAddressDto) {
 		
-		return resumeService.addWebAddress(webAddressDto);
+		return resumeService.addOrUpdateWebAddress(webAddressDto);
 		
 	}
-	@PostMapping("/addLanguage")
-	public Result addLanguage(@RequestBody @Valid LanguageDto languageDto) {
+	@PostMapping("/addOrUpdateLanguage")
+	public Result addOrUpdateLanguage(@RequestBody @Valid LanguageDto languageDto) {
 		
-		return resumeService.addLanguage(languageDto);
+		return resumeService.addOrUpdateLanguage(languageDto);
 	}
 	
 	

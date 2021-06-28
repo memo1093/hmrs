@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LanguageDto {
 
+	private int id;
+
 	@NotNull(message = "Dil kısmı boş bırakılamaz")
 	@NotBlank(message = "Dil kısmı boş bırakılamaz")
 	@Length(min = 2,message = "")

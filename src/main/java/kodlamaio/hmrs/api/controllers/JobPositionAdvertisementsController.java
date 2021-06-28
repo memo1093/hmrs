@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,13 +35,17 @@ public class JobPositionAdvertisementsController extends ValidationHandler {
 	}
 	
 	@GetMapping("/getAll")
-	public DataResult<List<JobPositionAdvertisement>> getAll()
-	{
-		return jobPositionAdvertisementService.getAll();
+	public DataResult<List<JobPositionAdvertisement>> getAll(@RequestParam int pageNo,@RequestParam int pageSize,@RequestParam(required = false)String cityId)
+	{	
+		if (cityId.isEmpty()) {
+			cityId="0";
+		}
+		
+		return jobPositionAdvertisementService.getAll(pageNo,pageSize,Integer.parseInt(cityId));
 	}
 	@GetMapping("/getAllSorted")
-	public DataResult<List<JobPositionAdvertisement>> getAllSorted(){
-		return jobPositionAdvertisementService.getAllSorted();
+	public DataResult<List<JobPositionAdvertisement>> getAllSorted(@RequestParam int pageNo,@RequestParam int pageSize){
+		return jobPositionAdvertisementService.getAllSorted(pageNo,pageSize);
 	}
 	@PostMapping("/add")
 	public Result add(@RequestBody @Valid JobPositionAdvertisementDto jobPositionAdvertisementDto)
@@ -49,31 +54,37 @@ public class JobPositionAdvertisementsController extends ValidationHandler {
 		return jobPositionAdvertisementService.add(jobPositionAdvertisementDto);		
 	}
 	@GetMapping("/getActiveJobs")
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrue()
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrue(@RequestParam int pageNo,@RequestParam int pageSize)
 	{
-		return jobPositionAdvertisementService.getByIsStillActiveTrue();
+		return jobPositionAdvertisementService.getByIsStillActiveTrue(pageNo,pageSize);
 	}
 	@GetMapping("/getActiveJobsByDate")
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndByDate()
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndByDate(@RequestParam int pageNo,@RequestParam int pageSize)
 	{
-		return jobPositionAdvertisementService.getByIsStillActiveTrueAndByDate();
+		return jobPositionAdvertisementService.getByIsStillActiveTrueAndByDate(pageNo,pageSize);
 	}
 	@GetMapping("/getActiveJobsByCompanyName")
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndCompanyName(@RequestParam String companyName)
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndCompanyName(@RequestParam int pageNo,@RequestParam int pageSize, @RequestParam String companyName)
 	{
-		return jobPositionAdvertisementService.getByIsStillActiveTrueAndCompanyName(companyName);
+		return jobPositionAdvertisementService.getByIsStillActiveTrueAndCompanyName(pageNo,pageSize,companyName);
 	}
 	@GetMapping("/getById")
 	public DataResult<JobPositionAdvertisement> getById(@RequestParam int id){
 		return jobPositionAdvertisementService.getById(id);
 	}
 	@GetMapping("/getByJobPositionId")
-	public DataResult<List<JobPositionAdvertisement>> getByJobPositionId(int id){
-		return jobPositionAdvertisementService.getByJobPosition(id);
+	public DataResult<List<JobPositionAdvertisement>> getByJobPositionId(@RequestParam int pageNo,@RequestParam int pageSize,@RequestParam int id){
+		return jobPositionAdvertisementService.getByJobPosition(pageNo,pageSize,id);
 	}
 	@GetMapping("/getByIsStillActiveAndPositionNameSorted")
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionNameSorted(@RequestParam String position){
-		return jobPositionAdvertisementService.getByIsStillActiveAndPositionNameSorted(position);
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionSorted(@RequestParam int pageNo,@RequestParam int pageSize, @RequestParam List<Integer> positionIds){
+		
+		return jobPositionAdvertisementService.getByIsStillActiveAndPositionIdSorted(pageNo,pageSize,positionIds);
+	}
+	@GetMapping("/getAllIsStillActiveByCityIdAndPositionIdIn")
+	public DataResult<List<JobPositionAdvertisement>> getAllIsStillActiveByCityIdAndPositionIdIn(@RequestParam int pageNo,@RequestParam int pageSize,
+			@RequestParam int cityId,@RequestParam List<Integer> ids){
+		return jobPositionAdvertisementService.getAllIsStillActiveByCityIdAndPositionIdIn(pageNo,pageSize,cityId,ids);
 	}
 	
 

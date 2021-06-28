@@ -68,4 +68,10 @@ public class GraduationManager implements GraduationService {
 		return new SuccessResult("Okul bilgisi giriş işlemi başarılı!");
 	}
 
+	@Override
+	public DataResult<List<Graduation>> getByResumeId(int id) {
+		
+		return new SuccessDataResult<List<Graduation>>(graduationDao.getByResume_Id(id),"Okul bilgisi getirme işlemi başarılı!");
+	}
+
 }

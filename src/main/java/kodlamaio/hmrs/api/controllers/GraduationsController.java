@@ -3,6 +3,7 @@ package kodlamaio.hmrs.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kodlamaio.hmrs.business.abstracts.GraduationService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
+import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.entities.concretes.Graduation;
 
 @RestController
 @RequestMapping("api/graduations")
+@CrossOrigin
 public class GraduationsController {
 	private GraduationService graduationService;
 
@@ -45,6 +48,11 @@ public class GraduationsController {
 	@GetMapping("/getByEndDate")
 	public DataResult<List<Graduation>> getByEndDate(){
 		return graduationService.getByEndDate();
+	}
+	@GetMapping("/getByResumeId")
+	public DataResult<List<Graduation>> getByResumeId(@RequestParam int resumeId) {
+		
+		return graduationService.getByResumeId(resumeId);
 	}
 	
 	

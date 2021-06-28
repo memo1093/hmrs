@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GraduationDto {
+	private int id;
 	
 	@NotNull(message = "Okul adı boş bırakılamaz")
 	@NotBlank(message = "Okul adı boş bırakılamaz")

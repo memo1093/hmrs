@@ -1,5 +1,6 @@
 package kodlamaio.hmrs.entities.dtos;
 
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JobPositionDto {
+
+	private int id;
 	
 	@NotBlank(message = "Pozisyon ismi boş bırakılamaz")
 	@NotNull(message = "Pozisyon ismi boş bırakılamaz")

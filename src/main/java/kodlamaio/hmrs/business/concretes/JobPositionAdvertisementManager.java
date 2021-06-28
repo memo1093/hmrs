@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.hmrs.business.abstracts.JobPositionAdvertisementService;
@@ -12,6 +15,8 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
+import kodlamaio.hmrs.core.utilities.specifications.criterias.SearchCriteria;
+import kodlamaio.hmrs.core.utilities.specifications.specifications.JobPositionAdvertisementSpecification;
 import kodlamaio.hmrs.dataAccess.abstracts.JobPositionAdvertisementDao;
 import kodlamaio.hmrs.entities.concretes.JobPositionAdvertisement;
 import kodlamaio.hmrs.entities.dtos.JobPositionAdvertisementDto;
@@ -34,9 +39,14 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 	
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getAll() {
-		
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(),"Veri listeleme başarılı!");
+	public DataResult<List<JobPositionAdvertisement>> getAll(int pageNo,int pageSize,int cityId) {
+		JobPositionAdvertisementSpecification spec1= new JobPositionAdvertisementSpecification();
+		if (cityId>0) {
+			spec1 = new JobPositionAdvertisementSpecification(new SearchCriteria("cityId","=",cityId));
+		}
+		//JobPositionAdvertisementSpecification spec1 = new JobPositionAdvertisementSpecification(new SearchCriteria("cityId","=","6"));
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(spec1),"Veri listeleme başarılı!");
 	}
 
 	@Override
@@ -48,27 +58,28 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 	}
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrue() {
-		
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByIsStillActiveTrue(),"Veri listeleme başarılı!");
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrue(int pageNo,int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByIsStillActiveTrue(pageable),"Veri listeleme başarılı!");
 	}
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndByDate() {
-		
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByIsStillActiveTrueAndReleaseDate(),"Veri listeleme başarılı!");
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndByDate(int pageNo,int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByIsStillActiveTrueAndReleaseDate(pageable),"Veri listeleme başarılı!");
 	}
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndCompanyName(String companyName) {
-		
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByIsStillActiveTrueAndEmployer_companyNameContains(companyName),"Veri listeleme başarılı");
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveTrueAndCompanyName(int pageNo,int pageSize,String companyName) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByIsStillActiveTrueAndEmployer_companyNameContains(pageable,companyName),"Veri listeleme başarılı");
 	}
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getAllSorted() {
-		Sort sort = Sort.by(Sort.Direction.DESC,"releaseDate");
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(sort),"Veri listeleme başarılı!");
+	public DataResult<List<JobPositionAdvertisement>> getAllSorted(int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize,Sort.by(Sort.Direction.DESC,"releaseDate"));
+	
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(pageable).getContent(),"Veri listeleme başarılı!");
 	}
 
 	@Override
@@ -88,18 +99,30 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getByJobPosition(int id) {
-		
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByJobPosition_Id(id),"Id ye göre verilerin getirme işlemi başarılı!");
+	public DataResult<List<JobPositionAdvertisement>> getByJobPosition(int pageNo,int pageSize,int id) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByJobPosition_Id(pageable,id),"Id ye göre verilerin getirme işlemi başarılı!");
 	}
 
 
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionNameSorted(String position) {
-		
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByIsStillActiveTrueAndJobPosition_positionContains(position));
+	public DataResult<List<JobPositionAdvertisement>> getByIsStillActiveAndPositionIdSorted(int pageNo,int pageSize,List<Integer> positionIds) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByIsStillActiveTrueAndJobPosition_idIn(pageable,positionIds));
 	}
+
+
+
+	@Override
+	public DataResult<List<JobPositionAdvertisement>> getAllIsStillActiveByCityIdAndPositionIdIn(int pageNo,int pageSize,
+			int cityId, List<Integer> ids) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByCity_IdOrJobPosition_IdIn(pageable,cityId,ids));
+	}
+
+
+	
 	
 
 	

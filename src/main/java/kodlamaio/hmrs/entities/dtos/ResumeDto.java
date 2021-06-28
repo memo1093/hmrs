@@ -14,6 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeDto {
+
+	private int id;
+	
+	@NotBlank(message = "Başlık boş bırakılamaz")
+	@NotNull(message = "Başlık boş bırakılamaz")
+	@Length(min = 3,message = "Başlık minimum 3 karakter içermelidir")
+	private String title;
 	
 	@NotBlank(message = "Özet bilgi boş bırakılamaz")
 	@NotNull(message = "Özet bilgi boş bırakılamaz")

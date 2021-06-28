@@ -12,5 +12,6 @@ public interface JobExperienceService {
 	DataResult<List<JobExperience>> getByCompanyNameContains(String name);
 	DataResult<List<JobExperience>> getByStillWorkingFalse();
 	DataResult<List<JobExperience>> getByPositionContains(String name);
+	DataResult<List<JobExperience>> getByResumeId(int resumeId);
 	Result add(JobExperience jobExperience);
 }

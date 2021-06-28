@@ -18,5 +18,6 @@ public interface GraduationDao extends JpaRepository<Graduation,Integer>{
 	@Query("From Graduation g ORDER BY g.endDate desc")
 	List<Graduation> getByEndDate();
 	Graduation save(GraduationDto graduationDto);
+	List<Graduation> getByResume_Id(int id);
 
 }

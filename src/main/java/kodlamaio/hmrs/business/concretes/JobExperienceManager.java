@@ -49,4 +49,10 @@ public class JobExperienceManager implements JobExperienceService {
 		return new SuccessResult("Tecrübe bilgisi kayıt işlemi başarılı!");
 	}
 
+	@Override
+	public DataResult<List<JobExperience>> getByResumeId(int resumeId) {
+		
+		return new SuccessDataResult<List<JobExperience>>(jobExperienceDao.getByResume_Id(resumeId));
+	}
+
 }

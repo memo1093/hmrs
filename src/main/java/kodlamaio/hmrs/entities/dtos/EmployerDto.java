@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployerDto {
+	private int id;
 	
 	@NotBlank(message = "Email boş bırakılamaz")
 	@NotNull(message = "Email boş bırakılamaz")
@@ -40,7 +41,7 @@ public class EmployerDto {
 	@NotNull(message="Şirket internet adresi kısmı boş bırakılamaz")
 	@NotBlank(message="Şirket internet adresi boş bırakılamaz")
 	@Length(min = 3,message="Şirket internet adresi 3 karakterden az olamaz")
-	@Pattern(regexp = "[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",message = "Lütfen geçerli bir internet adresi giriniz")
+	@Pattern(regexp = "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$",message = "Lütfen geçerli bir internet adresi giriniz")
 	private String webAddress;
 	
 	@NotNull(message="Şirket telefon numarası boş bırakılamaz")

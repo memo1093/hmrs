@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JobExperienceDto {
+	private int id;
 	
 	@NotBlank(message = "Şirket adı boş bırakılamaz")
 	@NotNull(message = "Şirket adı boş bırakılamaz")

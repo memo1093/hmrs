@@ -1,10 +1,12 @@
 package kodlamaio.hmrs.business.concretes;
 
-import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,9 +58,9 @@ public class EmployerManager implements EmployerService{
 	
 
 	@Override
-	public DataResult<List<Employer>> getAll() {
-		
-		return new SuccessDataResult<List<Employer>>(employerDao.findAll(),"Veri çekme işlemi başarılı!");
+	public DataResult<Page<Employer>> getAll(int pageNo,int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<Page<Employer>>(employerDao.findAll(pageable),"Veri çekme işlemi başarılı!");
 	}
 
 	@Override
@@ -73,12 +75,12 @@ public class EmployerManager implements EmployerService{
 	}
 
 	@Override
-	public Result add(EmployerDto userDto) {
+	public Result addOrUpdate(EmployerDto userDto) {
 		//Mapping
 		Employer user = modelMapper.map(userDto, Employer.class);
 		
 		//User validation
-		if (validationService.validateUser(user).isSuccess()==false)
+		if (!validationService.validateUser(user).isSuccess())
 			return validationService.validateUser(user);
 		
 		//User isActivated field sets to false
@@ -88,9 +90,15 @@ public class EmployerManager implements EmployerService{
 		this.userActivationDao.save(activationAdapter.generateActivationCode());
 		this.emailSenderAdapter.sendEmail(activationAdapter.getActivationCode());
 		
+		if (!this.employerDao.existsById(user.getId()) && user.getId()>0) {
+			return new ErrorResult("Kullanıcı bulunamadı.");
+		}
+		
 		//Saves user
 		employerDao.save(user);
-		return new SuccessResult(String.format("%s şirketi başarıyla sisteme kaydedildi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName()));
+		return new SuccessResult(this.employerDao.existsById(user.getId())
+				?String.format("%s şirketi başarıyla güncellendi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName())
+						:String.format("%s şirketi başarıyla eklendi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName()));
 	}
 
 	@Override
@@ -98,9 +106,10 @@ public class EmployerManager implements EmployerService{
 		
 		//Gets Employer
         Employer employer = employerDao.getOne(userId);
-        //Sets image name and path for cloudinary  (if image name exist in cloudinary, it will overwrite)
         
-        String imageName ="/company-pictures/"+ employer.getCompanyName() +"_"+userId; 
+        //Sets image name and path for cloudinary  
+        
+        String imageName ="/company-pictures/"+ employer.getCompanyName() +"_"+file.getName(); 
         
         //Uploads image to cloudinary   
         Map<?, String> uploader = (Map<?, String>)imageService.save(file,imageName).getData();

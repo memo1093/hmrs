@@ -1,10 +1,9 @@
 package kodlamaio.hmrs.api.controllers;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,16 +31,16 @@ public class CandidatesController extends ValidationHandler {
 		this.candidateService=candidateService;
 	}
 	@GetMapping("/getAll")
-	public DataResult<List<Candidate>> getCandidates(){
-		return this.candidateService.getAll();
+	public DataResult<Page<Candidate>> getCandidates(@RequestParam int pageNo,@RequestParam int pageSize){
+		return this.candidateService.getAll(pageNo,pageSize);
 	}
 	@GetMapping("/get")
 	public DataResult<Candidate> getCandidate(int id){
 		return this.candidateService.get(id);
 	}
-	@PostMapping("/add")
-	public Result addCandidates(@RequestBody @Valid CandidateDto candidateDto){
-		return this.candidateService.add(candidateDto);
+	@PostMapping("/addOrUpdate")
+	public Result addOrUpdate(@RequestBody @Valid CandidateDto candidateDto){
+		return this.candidateService.addOrUpdate(candidateDto);
 	}
 	@PostMapping("/addProfilePicture")
 	public Result addCandidatesImage(@RequestBody MultipartFile file,@RequestParam int userId){

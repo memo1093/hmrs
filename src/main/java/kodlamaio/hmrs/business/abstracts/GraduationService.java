@@ -14,6 +14,8 @@ public interface GraduationService {
 	DataResult<List<Graduation>> getByStillStudyingFalse();
 	DataResult<List<Graduation>> getByStillStudyingTrue();
 	DataResult<List<Graduation>> getByEndDate();
+	DataResult<List<Graduation>> getByResumeId(int id);
+	
 	Result add(Graduation graduation);
 	
 	

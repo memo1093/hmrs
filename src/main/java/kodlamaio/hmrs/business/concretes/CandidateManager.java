@@ -1,10 +1,12 @@
 package kodlamaio.hmrs.business.concretes;
-
 import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,10 +54,10 @@ public class CandidateManager implements CandidateService {
 	}
 
 	@Override
-	public DataResult<List<Candidate>> getAll() {
+	public DataResult<Page<Candidate>> getAll(int pageNo, int pageSize) {
 		
-		
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(),"Veri getirme işlemi başarılı!");
+		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<Page<Candidate>>(this.candidateDao.findAll(pageable),"Veri getirme işlemi başarılı!");
 		
 	}
 
@@ -67,15 +69,17 @@ public class CandidateManager implements CandidateService {
 	}
 
 	@Override
-	public Result add(CandidateDto userDto) {
+	public Result addOrUpdate(CandidateDto userDto) {
 		//Model mapping
 		Candidate user = modelMapper.map(userDto, Candidate.class);
 	
-		//Checks if user email and identity number is exists		
-		for (Candidate candidate : this.candidateDao.findAll()) {
-			if (candidate.getIdentityNumber().equals(user.getIdentityNumber()) || candidate.getEmail().equals(user.getEmail()))
-				return new ErrorResult("Böyle bir kullanıcı zaten mevcut.");
+		//if candidate exist it will update the candidate.
+		
+		//Checks if given id is not exist in database and more than 0 returns Error
+		if (!this.candidateDao.existsById(user.getId()) && user.getId()>0) {
+			return new ErrorResult("Kullanıcı bulunamadı.");
 		}
+		
 		
 		//Checks user identity number is real
 		if (!userCheckService.checkUser(user))
@@ -88,7 +92,9 @@ public class CandidateManager implements CandidateService {
 		
 		//Saves user
 		this.candidateDao.save(user);
-		return new SuccessResult(String.format("%s %s adlı kullanıcı başarıyla eklendi!",user.getFirstName(),user.getLastName()));
+		return new SuccessResult(this.candidateDao.existsById(user.getId())
+				?String.format("%s %s adlı kullanıcı başarıyla güncellendi!",user.getFirstName(),user.getLastName())
+						:String.format("%s %s adlı kullanıcı başarıyla eklendi!",user.getFirstName(),user.getLastName()));
 		
 	}
 	@Override

@@ -24,12 +24,14 @@ public interface ResumeService {
 	DataResult<List<Resume>> getByWorkedJobPosition(String name);
 	
 	Result add(Resume resume);
-	Result addResume(ResumeDto resumeDto);
-	Result addGraduation(GraduationDto graduationDto);
-	Result addJobExperience(JobExperienceDto jobExperienceDto);
-	Result addTalent(TalentDto talentDto);
-	Result addWebAddress(WebAddressDto webAddressDto);
-	Result addLanguage(LanguageDto languageDto);
+	Result addOrUpdateResume(ResumeDto resumeDto);
+	Result addOrUpdateGraduation(GraduationDto graduationDto);
+	Result addOrUpdateJobExperience(JobExperienceDto jobExperienceDto);
+	Result addOrUpdateTalent(TalentDto talentDto);
+	Result addOrUpdateWebAddress(WebAddressDto webAddressDto);
+	Result addOrUpdateLanguage(LanguageDto languageDto);
+	
+	
 	
 	
 	
