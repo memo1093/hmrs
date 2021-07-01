@@ -20,6 +20,7 @@ import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.JobPositionAdvertisement;
 import kodlamaio.hmrs.entities.dtos.JobPositionAdvertisementDto;
+import kodlamaio.hmrs.entities.filters.JobPositionAdvertisementFilter;
 
 @RestController
 @RequestMapping("/api/jobAdvertisements")
@@ -85,6 +86,10 @@ public class JobPositionAdvertisementsController extends ValidationHandler {
 	public DataResult<List<JobPositionAdvertisement>> getAllIsStillActiveByCityIdAndPositionIdIn(@RequestParam int pageNo,@RequestParam int pageSize,
 			@RequestParam int cityId,@RequestParam List<Integer> ids){
 		return jobPositionAdvertisementService.getAllIsStillActiveByCityIdAndPositionIdIn(pageNo,pageSize,cityId,ids);
+	}
+	@PostMapping("/getByFilterWithPages")
+	public DataResult<Page<JobPositionAdvertisement>> getByFilterWithPages(@RequestParam int pageNo, @RequestParam int pageSize,@RequestBody JobPositionAdvertisementFilter jobAdvertisementFilter){
+		return jobPositionAdvertisementService.getByFilterWithPages(jobAdvertisementFilter, pageNo, pageSize);
 	}
 	
 

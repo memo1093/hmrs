@@ -15,11 +15,11 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
-import kodlamaio.hmrs.core.utilities.specifications.criterias.SearchCriteria;
-import kodlamaio.hmrs.core.utilities.specifications.specifications.JobPositionAdvertisementSpecification;
+
 import kodlamaio.hmrs.dataAccess.abstracts.JobPositionAdvertisementDao;
 import kodlamaio.hmrs.entities.concretes.JobPositionAdvertisement;
 import kodlamaio.hmrs.entities.dtos.JobPositionAdvertisementDto;
+import kodlamaio.hmrs.entities.filters.JobPositionAdvertisementFilter;
 
 @Service
 public class JobPositionAdvertisementManager implements JobPositionAdvertisementService{
@@ -40,13 +40,10 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 
 	@Override
 	public DataResult<List<JobPositionAdvertisement>> getAll(int pageNo,int pageSize,int cityId) {
-		JobPositionAdvertisementSpecification spec1= new JobPositionAdvertisementSpecification();
-		if (cityId>0) {
-			spec1 = new JobPositionAdvertisementSpecification(new SearchCriteria("cityId","=",cityId));
-		}
+		
 		//JobPositionAdvertisementSpecification spec1 = new JobPositionAdvertisementSpecification(new SearchCriteria("cityId","=","6"));
 		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(spec1),"Veri listeleme başarılı!");
+		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(),"Veri listeleme başarılı!");
 	}
 
 	@Override
@@ -119,6 +116,16 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 			int cityId, List<Integer> ids) {
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
 		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAllByCity_IdOrJobPosition_IdIn(pageable,cityId,ids));
+	}
+
+
+
+	@Override
+	public DataResult<Page<JobPositionAdvertisement>> getByFilterWithPages(JobPositionAdvertisementFilter jobAdvertisementFilter,
+			int pageNo, int pageSize) {
+	
+		Pageable pageable = PageRequest.of(pageNo -1, pageSize);
+		return new SuccessDataResult<Page<JobPositionAdvertisement>>(jobPositionAdvertisementDao.getByFilter(jobAdvertisementFilter, pageable));
 	}
 
 
