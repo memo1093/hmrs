@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kodlamaio.hmrs.business.abstracts.CandidateService;
+import kodlamaio.hmrs.business.abstracts.FavoriteJobAdvertisementService;
 import kodlamaio.hmrs.core.adapters.abstracts.UserCheckService;
 import kodlamaio.hmrs.core.adapters.concretes.ActivationAdapter;
 import kodlamaio.hmrs.core.adapters.concretes.EmailSenderAdapter;
@@ -23,7 +24,9 @@ import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.CandidateDao;
 import kodlamaio.hmrs.dataAccess.abstracts.UserActivationDao;
 import kodlamaio.hmrs.entities.concretes.Candidate;
+import kodlamaio.hmrs.entities.concretes.FavoriteJobAdvertisement;
 import kodlamaio.hmrs.entities.dtos.CandidateDto;
+import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 
 @Service
 public class CandidateManager implements CandidateService {
@@ -31,27 +34,31 @@ public class CandidateManager implements CandidateService {
 	private CandidateDao candidateDao;
 	private UserActivationDao userActivationDao;
 	private UserCheckService userCheckService;
+	private FavoriteJobAdvertisementService favoriteJobAdvertisementService;
 	private ImageService imageService;
 	private ModelMapper modelMapper;
-	
 	private ActivationAdapter activationAdapter;
 	private EmailSenderAdapter emailSenderAdapter;
 	
 	
-	
 	@Autowired
 	public CandidateManager(CandidateDao candidateDao, UserActivationDao userActivationDao,
-			UserCheckService userCheckService, ImageService imageService, ModelMapper modelMapper,
-			ActivationAdapter activationAdapter, EmailSenderAdapter emailSenderAdapter) {
+			UserCheckService userCheckService, FavoriteJobAdvertisementService favoriteJobAdvertisementService,
+			ImageService imageService, ModelMapper modelMapper, ActivationAdapter activationAdapter,
+			EmailSenderAdapter emailSenderAdapter) {
 		super();
 		this.candidateDao = candidateDao;
 		this.userActivationDao = userActivationDao;
 		this.userCheckService = userCheckService;
+		this.favoriteJobAdvertisementService = favoriteJobAdvertisementService;
 		this.imageService = imageService;
 		this.modelMapper = modelMapper;
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
 	}
+
+	
+	
 
 	@Override
 	public DataResult<Page<Candidate>> getAll(int pageNo, int pageSize) {
@@ -116,6 +123,18 @@ public class CandidateManager implements CandidateService {
 	        
 	    return new SuccessResult("Kayıt Başarılı");
 		
+	}
+
+	@Override
+	public DataResult<Integer> addToFavorites(FavoriteJobAdvertisementDto favoriteJobAdvertisementDto) {
+		FavoriteJobAdvertisement favoriteJobAdvertisement = modelMapper.map(favoriteJobAdvertisementDto, FavoriteJobAdvertisement.class);
+		
+		return favoriteJobAdvertisementService.add(favoriteJobAdvertisement);
+	}
+	@Override
+	public Result deleteFromFavorites(int favoriteJobAdvertisementId) {
+		
+		return favoriteJobAdvertisementService.delete(favoriteJobAdvertisementId);
 	}
 
 	

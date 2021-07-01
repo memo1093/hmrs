@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,9 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.Candidate;
+import kodlamaio.hmrs.entities.concretes.FavoriteJobAdvertisement;
 import kodlamaio.hmrs.entities.dtos.CandidateDto;
+import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 
 @RestController
 @RequestMapping("/api/candidates")
@@ -45,6 +48,15 @@ public class CandidatesController extends ValidationHandler {
 	@PostMapping("/addProfilePicture")
 	public Result addCandidatesImage(@RequestBody MultipartFile file,@RequestParam int userId){
 		return this.candidateService.saveImage(file, userId);
+	}
+	
+	@PostMapping("/addToFavorites")
+	DataResult<Integer> addToFavorites(@RequestBody @Valid FavoriteJobAdvertisementDto favoriteJobAdvertisementDto) {
+		return candidateService.addToFavorites(favoriteJobAdvertisementDto);
+	}
+	@DeleteMapping("/deleteFromFavorites")
+	Result deleteFromFavorites(@RequestParam int favoriteJobAdvertisementId ) {
+		return candidateService.deleteFromFavorites(favoriteJobAdvertisementId);
 	}
 	
 	

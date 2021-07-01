@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kodlamaio.hmrs.business.abstracts.GraduationService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
-import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.entities.concretes.Graduation;
 
 @RestController

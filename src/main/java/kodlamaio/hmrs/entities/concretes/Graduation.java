@@ -28,7 +28,7 @@ public class Graduation {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	
-	@JsonIgnore
+
 	private int id;
 	
 	@Column(name="school_name")

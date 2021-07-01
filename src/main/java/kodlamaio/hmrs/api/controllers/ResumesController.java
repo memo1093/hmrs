@@ -1,7 +1,9 @@
 package kodlamaio.hmrs.api.controllers;
 
 import java.util.List;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import kodlamaio.hmrs.business.abstracts.ResumeService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.Resume;
+import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -24,7 +29,8 @@ import kodlamaio.hmrs.entities.dtos.WebAddressDto;
 
 @RestController
 @RequestMapping("/api/resumes")
-@CrossOrigin
+@CrossOrigin(origins ="*",allowedHeaders = "*")
+
 public class ResumesController extends ValidationHandler {
 	@Autowired
 	private ResumeService resumeService;
@@ -92,6 +98,11 @@ public class ResumesController extends ValidationHandler {
 	public Result addOrUpdateLanguage(@RequestBody @Valid LanguageDto languageDto) {
 		
 		return resumeService.addOrUpdateLanguage(languageDto);
+	}
+	@PostMapping("/addOrUpdateProfilePicture")
+	public Result addOrUpdateLanguage(@RequestBody @Valid MultipartFile file,int resumeId) {
+		
+		return resumeService.saveImage(file,resumeId);
 	}
 	
 	

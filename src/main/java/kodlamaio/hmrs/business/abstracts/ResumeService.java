@@ -3,9 +3,13 @@ package kodlamaio.hmrs.business.abstracts;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
+import kodlamaio.hmrs.entities.concretes.FavoriteJobAdvertisement;
 import kodlamaio.hmrs.entities.concretes.Resume;
+import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -30,6 +34,7 @@ public interface ResumeService {
 	Result addOrUpdateTalent(TalentDto talentDto);
 	Result addOrUpdateWebAddress(WebAddressDto webAddressDto);
 	Result addOrUpdateLanguage(LanguageDto languageDto);
+	Result saveImage(MultipartFile file,int resumeId);
 	
 	
 	

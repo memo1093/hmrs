@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.hmrs.business.abstracts.JobPositionAdvertisementService;
@@ -76,10 +76,10 @@ public class JobPositionAdvertisementManager implements JobPositionAdvertisement
 	}
 
 	@Override
-	public DataResult<List<JobPositionAdvertisement>> getAllSorted(int pageNo, int pageSize) {
+	public DataResult<Page<JobPositionAdvertisement>> getAllSorted(int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo-1, pageSize,Sort.by(Sort.Direction.DESC,"releaseDate"));
 	
-		return new SuccessDataResult<List<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(pageable).getContent(),"Veri listeleme başarılı!");
+		return new SuccessDataResult<Page<JobPositionAdvertisement>>(jobPositionAdvertisementDao.findAll(pageable),"Veri listeleme başarılı!");
 	}
 
 	@Override
