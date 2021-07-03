@@ -8,5 +8,7 @@ import kodlamaio.hmrs.entities.concretes.WebAddress;
 
 public interface WebAddressService {
 	DataResult<List<WebAddress>> getByResumeId(int id);
+	
 	Result add(WebAddress webAddress);
+	Result delete(int id);
 }

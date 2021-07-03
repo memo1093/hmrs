@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,6 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
 import kodlamaio.hmrs.entities.concretes.Resume;
-import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -35,12 +35,8 @@ public class ResumesController extends ValidationHandler {
 	@Autowired
 	private ResumeService resumeService;
 
-	@PostMapping("/addResume")
-	public Result addResume(@RequestBody @Valid ResumeDto resumeDto) 
-	{
-		
-		return resumeService.addOrUpdateResume(resumeDto);
-	}
+	//Get mappings
+	
 	@GetMapping("/getByCandidateId")
 	public DataResult<List<Resume>> getByCandidateId(@RequestParam int id)
 	{
@@ -71,6 +67,14 @@ public class ResumesController extends ValidationHandler {
 	@GetMapping("/getByWorkedJobPosition")
 	public DataResult<List<Resume>> getByWorkedJobPosition(@RequestParam String position){
 		return resumeService.getByWorkedJobPosition(position);
+	}
+	
+	// Post mappings - AddOrUpdate
+	@PostMapping("/addResume")
+	public Result addResume(@RequestBody @Valid ResumeDto resumeDto) 
+	{
+		
+		return resumeService.addOrUpdateResume(resumeDto);
 	}
 	
 	@PostMapping("/addOrUpdateGraduation")
@@ -105,6 +109,27 @@ public class ResumesController extends ValidationHandler {
 		return resumeService.saveImage(file,resumeId);
 	}
 	
+	// Delete Mappings
+	@DeleteMapping("/deleteResume")
+	public Result deleteResume(int id) {
+		return resumeService.deleteResume(id);
+	}
+	@DeleteMapping("/deleteGraduation")
+	public Result deleteGraduation(int graduationId) {
+		return resumeService.deleteGraduation(graduationId);
+	}
+	@DeleteMapping("/deleteTalent")
+	public Result deleteTalent(int talentId) {
+		return resumeService.deleteTalent(talentId);
+	}
+	@DeleteMapping("/deleteWebAddress")
+	public Result deleteWebAddress(int webAddressId) {
+		return resumeService.deleteWebAddress(webAddressId);
+	}
+	@DeleteMapping("/deleteJobExperience")
+	public Result deleteJobExperience(int jobExperienceId) {
+		return resumeService.deleteJobExperience(jobExperienceId);
+	}
 	
 	
 	

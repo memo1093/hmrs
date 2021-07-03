@@ -183,6 +183,52 @@ public class ResumeManager implements ResumeService{
 		
 	}
 
+
+
+
+	@Override
+	public Result deleteResume(int id) {
+		resumeDao.deleteById(id);
+		return new SuccessResult("Özgeçmiş silindi!");
+	}
+
+
+
+
+	@Override
+	public Result deleteGraduation(int graduationId) {
+		graduationService.delete(graduationId);
+		return new SuccessResult("Okul/Mezuniyet bilgisi silindi!");
+	}
+
+
+
+
+	@Override
+	public Result deleteTalent(int talentId) {
+		talentService.delete(talentId);
+		return new SuccessResult("Yetenek bilgisi silindi!");
+	}
+
+
+
+
+	@Override
+	public Result deleteWebAddress(int webAddressId) {
+		webAddressService.delete(webAddressId);
+		return new SuccessResult("İnternet adresleri silindi!");
+	}
+
+
+
+
+	@Override
+	public Result deleteJobExperience(int jobExperienceId) {
+		
+		jobExperienceService.delete(jobExperienceId);
+		return new SuccessResult("İş tecrübe bilgisi silindi!");
+	}
+
 	
 	
 	

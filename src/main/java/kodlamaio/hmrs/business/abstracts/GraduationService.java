@@ -17,6 +17,7 @@ public interface GraduationService {
 	DataResult<List<Graduation>> getByResumeId(int id);
 	
 	Result add(Graduation graduation);
+	Result delete(int id);
 	
 	
 

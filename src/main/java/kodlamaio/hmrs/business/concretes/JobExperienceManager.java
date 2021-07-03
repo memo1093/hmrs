@@ -55,4 +55,10 @@ public class JobExperienceManager implements JobExperienceService {
 		return new SuccessDataResult<List<JobExperience>>(jobExperienceDao.getByResume_Id(resumeId));
 	}
 
+	@Override
+	public Result delete(int id) {
+		jobExperienceDao.deleteById(id);
+		return new SuccessResult("İş tecrübesi bilgisi silindi!");
+	}
+
 }

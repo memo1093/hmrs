@@ -32,4 +32,10 @@ public class WebAddressManager implements WebAddressService {
 		return new SuccessResult("İnternet adresi kayıt işlemi başarılı!");
 	}
 
+	@Override
+	public Result delete(int id) {
+		webAddressDao.deleteById(id);
+		return new SuccessResult("Web adresleri silindi!");
+	}
+
 }

@@ -37,4 +37,10 @@ public class TalentManager implements TalentService {
 		return new SuccessDataResult<List<Talent>>(talentDao.getByResume_Id(resumeId));
 	}
 
+	@Override
+	public Result delete(int id) {
+		talentDao.deleteById(id);
+		return new SuccessResult("Silme işlemi başarılı!");
+	}
+
 }
