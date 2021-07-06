@@ -27,9 +27,9 @@ public class WebAddressManager implements WebAddressService {
 	}
 
 	@Override
-	public Result add(WebAddress webAddress) {
-		webAddressDao.save(webAddress);
-		return new SuccessResult("İnternet adresi kayıt işlemi başarılı!");
+	public DataResult<WebAddress> add(WebAddress webAddress) {
+		WebAddress savedWebAddress = webAddressDao.save(webAddress);
+		return new SuccessDataResult<WebAddress>(savedWebAddress,"İnternet adresi kayıt işlemi başarılı!");
 	}
 
 	@Override

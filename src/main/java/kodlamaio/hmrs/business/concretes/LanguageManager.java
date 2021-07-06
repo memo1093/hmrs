@@ -25,16 +25,22 @@ public class LanguageManager implements LanguageService {
 	}
 
 	@Override
-	public Result add(Language language) {
+	public DataResult<Language> add(Language language) {
 		
-		languageDao.save(language);
-		return new SuccessResult("Dil ekleme işlemi başarılı!");
+		Language savedLanguage =  languageDao.save(language);
+		return new SuccessDataResult<Language>(savedLanguage,"Dil ekleme işlemi başarılı!");
 	}
 
 	@Override
 	public DataResult<List<Language>> getByResumeId(int resumeId) {
 		
 		return new SuccessDataResult<List<Language>>(languageDao.getByResume_Id(resumeId), "Özgeçmişe göre dillerin getirilmesi işlemi başarılı!");
+	}
+
+	@Override
+	public Result delete(int id) {
+		languageDao.deleteById(id);
+		return new SuccessResult("Dilleri silme işlemi başarılı!");
 	}
 
 	

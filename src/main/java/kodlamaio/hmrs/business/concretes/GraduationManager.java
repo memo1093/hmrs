@@ -62,10 +62,10 @@ public class GraduationManager implements GraduationService {
 
 
 	@Override
-	public Result add(Graduation graduation) {
+	public DataResult<Graduation> add(Graduation graduation) {
 		
-		graduationDao.save(graduation);
-		return new SuccessResult("Okul bilgisi giriş işlemi başarılı!");
+		Graduation savedGraduation = graduationDao.save(graduation);
+		return new SuccessDataResult<Graduation>(savedGraduation,"Okul bilgisi giriş işlemi başarılı!");
 	}
 
 	@Override

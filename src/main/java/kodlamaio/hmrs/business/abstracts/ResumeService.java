@@ -7,7 +7,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
+import kodlamaio.hmrs.entities.concretes.Graduation;
+import kodlamaio.hmrs.entities.concretes.JobExperience;
+import kodlamaio.hmrs.entities.concretes.Language;
 import kodlamaio.hmrs.entities.concretes.Resume;
+import kodlamaio.hmrs.entities.concretes.Talent;
+import kodlamaio.hmrs.entities.concretes.WebAddress;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -26,17 +31,18 @@ public interface ResumeService {
 	DataResult<List<Resume>> getByWorkedJobPosition(String name);
 	
 	Result add(Resume resume);
-	Result addOrUpdateResume(ResumeDto resumeDto);
-	Result addOrUpdateGraduation(GraduationDto graduationDto);
-	Result addOrUpdateJobExperience(JobExperienceDto jobExperienceDto);
-	Result addOrUpdateTalent(TalentDto talentDto);
-	Result addOrUpdateWebAddress(WebAddressDto webAddressDto);
-	Result addOrUpdateLanguage(LanguageDto languageDto);
+	DataResult<Resume> addOrUpdateResume(ResumeDto resumeDto);
+	DataResult<Graduation> addOrUpdateGraduation(GraduationDto graduationDto);
+	DataResult<JobExperience> addOrUpdateJobExperience(JobExperienceDto jobExperienceDto);
+	DataResult<Talent> addOrUpdateTalent(TalentDto talentDto);
+	DataResult<WebAddress> addOrUpdateWebAddress(WebAddressDto webAddressDto);
+	DataResult<Language> addOrUpdateLanguage(LanguageDto languageDto);
 	Result saveImage(MultipartFile file,int resumeId);
 	
 	Result deleteResume(int id);
 	Result deleteGraduation(int graduationId);
 	Result deleteTalent(int talentId);
+	Result deleteLanguage(int languageId);
 	Result deleteWebAddress(int webAddressId);
 	Result deleteJobExperience(int jobExperienceId);
 	

@@ -19,7 +19,12 @@ import kodlamaio.hmrs.business.abstracts.ResumeService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.validationHandlers.ValidationHandler;
+import kodlamaio.hmrs.entities.concretes.Graduation;
+import kodlamaio.hmrs.entities.concretes.JobExperience;
+import kodlamaio.hmrs.entities.concretes.Language;
 import kodlamaio.hmrs.entities.concretes.Resume;
+import kodlamaio.hmrs.entities.concretes.Talent;
+import kodlamaio.hmrs.entities.concretes.WebAddress;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -71,64 +76,68 @@ public class ResumesController extends ValidationHandler {
 	
 	// Post mappings - AddOrUpdate
 	@PostMapping("/addResume")
-	public Result addResume(@RequestBody @Valid ResumeDto resumeDto) 
+	public DataResult<Resume> addResume(@RequestBody @Valid ResumeDto resumeDto) 
 	{
 		
 		return resumeService.addOrUpdateResume(resumeDto);
 	}
 	
 	@PostMapping("/addOrUpdateGraduation")
-	public Result addOrUpdateGraduation(@RequestBody @Valid GraduationDto graduationDto) {
+	public DataResult<Graduation> addOrUpdateGraduation(@RequestBody @Valid GraduationDto graduationDto) {
 		
 		return resumeService.addOrUpdateGraduation(graduationDto);
 	}
 	@PostMapping("/addOrUpdateJobExperience")
-	public Result addOrUpdateJobExperience(@RequestBody @Valid JobExperienceDto jobExperienceDto) {
+	public DataResult<JobExperience> addOrUpdateJobExperience(@RequestBody @Valid JobExperienceDto jobExperienceDto) {
 		
 		return resumeService.addOrUpdateJobExperience(jobExperienceDto);
 	}
 	@PostMapping("/addOrUpdateTalent")
-	public Result addOrUpdateTalent(@RequestBody @Valid TalentDto talentDto) {
+	public DataResult<Talent> addOrUpdateTalent(@RequestBody @Valid TalentDto talentDto) {
 		
 		return resumeService.addOrUpdateTalent(talentDto);		
 	}
 	@PostMapping("/addOrUpdateWebAddress")
-	public Result addOrUpdateWebAddress(@RequestBody @Valid WebAddressDto webAddressDto) {
+	public DataResult<WebAddress> addOrUpdateWebAddress(@RequestBody @Valid WebAddressDto webAddressDto) {
 		
 		return resumeService.addOrUpdateWebAddress(webAddressDto);
 		
 	}
 	@PostMapping("/addOrUpdateLanguage")
-	public Result addOrUpdateLanguage(@RequestBody @Valid LanguageDto languageDto) {
+	public DataResult<Language> addOrUpdateLanguage(@RequestBody @Valid LanguageDto languageDto) {
 		
 		return resumeService.addOrUpdateLanguage(languageDto);
 	}
 	@PostMapping("/addOrUpdateProfilePicture")
-	public Result addOrUpdateLanguage(@RequestBody @Valid MultipartFile file,int resumeId) {
+	public Result addOrUpdateProfilePicture(@RequestBody @Valid MultipartFile file,int resumeId) {
 		
 		return resumeService.saveImage(file,resumeId);
 	}
 	
 	// Delete Mappings
 	@DeleteMapping("/deleteResume")
-	public Result deleteResume(int id) {
+	public Result deleteResume(@RequestParam int id) {
 		return resumeService.deleteResume(id);
 	}
 	@DeleteMapping("/deleteGraduation")
-	public Result deleteGraduation(int graduationId) {
+	public Result deleteGraduation(@RequestParam int graduationId) {
 		return resumeService.deleteGraduation(graduationId);
 	}
 	@DeleteMapping("/deleteTalent")
-	public Result deleteTalent(int talentId) {
+	public Result deleteTalent(@RequestParam int talentId) {
 		return resumeService.deleteTalent(talentId);
 	}
 	@DeleteMapping("/deleteWebAddress")
-	public Result deleteWebAddress(int webAddressId) {
+	public Result deleteWebAddress(@RequestParam int webAddressId) {
 		return resumeService.deleteWebAddress(webAddressId);
 	}
 	@DeleteMapping("/deleteJobExperience")
-	public Result deleteJobExperience(int jobExperienceId) {
+	public Result deleteJobExperience(@RequestParam int jobExperienceId) {
 		return resumeService.deleteJobExperience(jobExperienceId);
+	}
+	@DeleteMapping("/deleteLanguage")
+	public Result deleteLanguage(@RequestParam int languageId) {
+		return resumeService.deleteLanguage(languageId);
 	}
 	
 	

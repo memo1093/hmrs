@@ -50,7 +50,7 @@ public class FavoriteJobAdvertisementManager implements FavoriteJobAdvertisement
 
 	@Override
 	public DataResult<Integer> add(FavoriteJobAdvertisement favoriteJobAdvertisement) {
-		FavoriteJobAdvertisement savedFavoriteJobAdvertisement = favoriteJobAdvertisementDao.saveAndFlush(favoriteJobAdvertisement);
+		FavoriteJobAdvertisement savedFavoriteJobAdvertisement = favoriteJobAdvertisementDao.save(favoriteJobAdvertisement);
 		return new SuccessDataResult<Integer>(savedFavoriteJobAdvertisement.getId(),"Favorilere Ekleme işlemi başarılı!");
 	}
 

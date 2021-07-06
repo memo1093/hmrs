@@ -25,7 +25,6 @@ public class LanguageDto {
 	private String language;
 	
 	@NotNull(message = "Derece kısmı boş bırakılamaz")
-	@NotBlank(message = "Derece kısmı boş bırakılamaz")
 	@Min(value = 1,message = "Derece 1-5 arasında olmalıdır")
 	@Max(value = 5,message = "Derece 1-5 arasında olmalıdır")
 	private int rate;

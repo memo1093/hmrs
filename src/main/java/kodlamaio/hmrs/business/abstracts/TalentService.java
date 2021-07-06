@@ -10,6 +10,6 @@ public interface TalentService {
 	DataResult<List<Talent>> getByNameContains(String name);
 	DataResult<List<Talent>> getByResumeId(int resumeId);
 	
-	Result add(Talent talent);
+	DataResult<Talent> add(Talent talent);
 	Result delete(int id);
 }

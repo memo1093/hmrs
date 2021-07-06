@@ -27,9 +27,7 @@ public class ResumeDto {
 	@Length(min = 10,message = "Özet bilgi minimum 10 karakter içermelidir")
 	private String coverLetter;
 	
-	@NotBlank(message = "Özet bilgi boş bırakılamaz")
-	@NotNull(message = "Özet bilgi boş bırakılamaz")
-	@Length(min = 2,message = "Özet bilgi minimum 2 karakter içermelidir")
+	
 	private String profilePicture;
 	
 	@Min(1)

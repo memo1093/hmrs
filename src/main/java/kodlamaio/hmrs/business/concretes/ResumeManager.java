@@ -21,14 +21,12 @@ import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.ResumeDao;
-import kodlamaio.hmrs.entities.concretes.FavoriteJobAdvertisement;
 import kodlamaio.hmrs.entities.concretes.Graduation;
 import kodlamaio.hmrs.entities.concretes.JobExperience;
 import kodlamaio.hmrs.entities.concretes.Language;
 import kodlamaio.hmrs.entities.concretes.Resume;
 import kodlamaio.hmrs.entities.concretes.Talent;
 import kodlamaio.hmrs.entities.concretes.WebAddress;
-import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 import kodlamaio.hmrs.entities.dtos.GraduationDto;
 import kodlamaio.hmrs.entities.dtos.JobExperienceDto;
 import kodlamaio.hmrs.entities.dtos.LanguageDto;
@@ -95,7 +93,7 @@ public class ResumeManager implements ResumeService{
 	}
 
 	@Override
-	public Result addOrUpdateGraduation(GraduationDto graduationDto) {
+	public DataResult<Graduation> addOrUpdateGraduation(GraduationDto graduationDto) {
 		
 		Graduation graduation = modelMapper.map(graduationDto, Graduation.class);		
 		return graduationService.add(graduation);
@@ -104,14 +102,14 @@ public class ResumeManager implements ResumeService{
 
 
 	@Override
-	public Result addOrUpdateJobExperience(JobExperienceDto jobExperienceDto) {
+	public DataResult<JobExperience> addOrUpdateJobExperience(JobExperienceDto jobExperienceDto) {
 		
 		JobExperience jobExperience = modelMapper.map(jobExperienceDto, JobExperience.class);
 		return jobExperienceService.add(jobExperience);
 	}
 
 	@Override
-	public Result addOrUpdateTalent(TalentDto talentDto) {
+	public DataResult<Talent> addOrUpdateTalent(TalentDto talentDto) {
 		Talent talent = modelMapper.map(talentDto, Talent.class);
 		return talentService.add(talent);
 		
@@ -119,23 +117,23 @@ public class ResumeManager implements ResumeService{
 
 
 	@Override
-	public Result addOrUpdateWebAddress(WebAddressDto webAddressDto) {
+	public DataResult<WebAddress> addOrUpdateWebAddress(WebAddressDto webAddressDto) {
 		WebAddress webAddress = modelMapper.map(webAddressDto, WebAddress.class);
 		return webAddressService.add(webAddress);
 	}
 
 	@Override
-	public Result addOrUpdateLanguage(LanguageDto languageDto) {
+	public DataResult<Language> addOrUpdateLanguage(LanguageDto languageDto) {
 		Language language = modelMapper.map(languageDto, Language.class);
 		return languageService.add(language);
 	}
 
 	@Override
-	public Result addOrUpdateResume(ResumeDto resumeDto) {
+	public DataResult<Resume> addOrUpdateResume(ResumeDto resumeDto) {
 		Resume resume = modelMapper.map(resumeDto, Resume.class);
 		
-		resumeDao.save(resume);
-		return new SuccessResult("Özgeçmiş kaydetme işlemi başarılı!");
+		Resume savedResume = resumeDao.save(resume);
+		return new SuccessDataResult<Resume>(savedResume,"Özgeçmiş kaydetme işlemi başarılı!");
 	}
 
 	@Override
@@ -227,6 +225,15 @@ public class ResumeManager implements ResumeService{
 		
 		jobExperienceService.delete(jobExperienceId);
 		return new SuccessResult("İş tecrübe bilgisi silindi!");
+	}
+
+
+
+
+	@Override
+	public Result deleteLanguage(int languageId) {
+		languageService.delete(languageId);
+		return new SuccessResult("Dil bilgisi silindi!");
 	}
 
 	

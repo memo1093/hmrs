@@ -9,5 +9,7 @@ import kodlamaio.hmrs.entities.concretes.Language;
 public interface LanguageService {
 	DataResult<List<Language>> getByLanguageContains(String name);
 	DataResult<List<Language>> getByResumeId(int resumeId);
-	Result add(Language language);
+	
+	DataResult<Language> add(Language language);
+	Result delete(int id);
 }

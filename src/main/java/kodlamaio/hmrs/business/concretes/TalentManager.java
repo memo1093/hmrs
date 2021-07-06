@@ -26,9 +26,9 @@ public class TalentManager implements TalentService {
 	}
 
 	@Override
-	public Result add(Talent talent) {
-		talentDao.save(talent);
-		return new SuccessResult("Veri ekleme işlemi başarılı!");
+	public DataResult<Talent> add(Talent talent) {
+		Talent savedTalent = talentDao.save(talent);
+		return new SuccessDataResult<Talent>(savedTalent,"Yetenek ekleme işlemi başarılı!");
 	}
 
 	@Override

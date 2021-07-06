@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TalentDto {
+	
+	private int id;
+	
 	@NotBlank(message = "Yetenek adı boş bırakılamaz")
 	@NotNull(message = "Yetenek adı boş bırakılamaz")
 	@Length(min=2,message = "Yetenek adı minimum 2 karakter olmalıdır.")
