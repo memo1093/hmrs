@@ -1,5 +1,4 @@
 package kodlamaio.hmrs.business.concretes;
-import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
@@ -12,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kodlamaio.hmrs.business.abstracts.CandidateService;
 import kodlamaio.hmrs.business.abstracts.FavoriteJobAdvertisementService;
+import kodlamaio.hmrs.business.abstracts.RoleService;
 import kodlamaio.hmrs.core.adapters.abstracts.UserCheckService;
 import kodlamaio.hmrs.core.adapters.concretes.ActivationAdapter;
 import kodlamaio.hmrs.core.adapters.concretes.EmailSenderAdapter;
@@ -25,6 +25,7 @@ import kodlamaio.hmrs.dataAccess.abstracts.CandidateDao;
 import kodlamaio.hmrs.dataAccess.abstracts.UserActivationDao;
 import kodlamaio.hmrs.entities.concretes.Candidate;
 import kodlamaio.hmrs.entities.concretes.FavoriteJobAdvertisement;
+import kodlamaio.hmrs.entities.concretes.Role;
 import kodlamaio.hmrs.entities.dtos.CandidateDto;
 import kodlamaio.hmrs.entities.dtos.FavoriteJobAdvertisementDto;
 
@@ -36,26 +37,33 @@ public class CandidateManager implements CandidateService {
 	private UserCheckService userCheckService;
 	private FavoriteJobAdvertisementService favoriteJobAdvertisementService;
 	private ImageService imageService;
+	private RoleService roleService;
 	private ModelMapper modelMapper;
 	private ActivationAdapter activationAdapter;
 	private EmailSenderAdapter emailSenderAdapter;
 	
-	
 	@Autowired
 	public CandidateManager(CandidateDao candidateDao, UserActivationDao userActivationDao,
 			UserCheckService userCheckService, FavoriteJobAdvertisementService favoriteJobAdvertisementService,
-			ImageService imageService, ModelMapper modelMapper, ActivationAdapter activationAdapter,
-			EmailSenderAdapter emailSenderAdapter) {
+			ImageService imageService, RoleService roleService, ModelMapper modelMapper,
+			ActivationAdapter activationAdapter, EmailSenderAdapter emailSenderAdapter) {
 		super();
 		this.candidateDao = candidateDao;
 		this.userActivationDao = userActivationDao;
 		this.userCheckService = userCheckService;
 		this.favoriteJobAdvertisementService = favoriteJobAdvertisementService;
 		this.imageService = imageService;
+		this.roleService = roleService;
 		this.modelMapper = modelMapper;
 		this.activationAdapter = activationAdapter;
 		this.emailSenderAdapter = emailSenderAdapter;
 	}
+
+	
+	
+
+	
+	
 
 	
 	
@@ -96,6 +104,9 @@ public class CandidateManager implements CandidateService {
 		this.userActivationDao.save(activationAdapter.generateActivationCode());
 		this.emailSenderAdapter.sendEmail(activationAdapter.getActivationCode());
 		
+		//Adds user a role
+		Role role = roleService.getByName("Candidate").getData();
+		user.setRole(role);
 		
 		//Saves user
 		this.candidateDao.save(user);

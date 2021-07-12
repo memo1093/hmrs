@@ -1,5 +1,7 @@
 package kodlamaio.hmrs.business.concretes;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 import kodlamaio.hmrs.business.abstracts.EmployeeService;
 import kodlamaio.hmrs.business.abstracts.EmployerService;
 import kodlamaio.hmrs.business.abstracts.JobPositionAdvertisementService;
+import kodlamaio.hmrs.business.abstracts.RoleService;
+import kodlamaio.hmrs.business.abstracts.UserService;
 import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.ErrorResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
@@ -17,6 +21,8 @@ import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
 import kodlamaio.hmrs.dataAccess.abstracts.EmployeeDao;
 import kodlamaio.hmrs.entities.concretes.Employee;
+import kodlamaio.hmrs.entities.concretes.Role;
+import kodlamaio.hmrs.entities.concretes.User;
 import kodlamaio.hmrs.entities.dtos.EmployeeDto;
 
 
@@ -27,23 +33,25 @@ public class EmployeeManager implements EmployeeService{
 	private EmployeeDao employeeDao;	
 	private EmployerService employerService;
 	private JobPositionAdvertisementService jobPositionAdvertisementService;
+	private RoleService roleService;
+	private UserService userService;
 	
 	private ModelMapper modelMapper;
 
-	
-
 	@Autowired
 	public EmployeeManager(EmployeeDao employeeDao, EmployerService employerService,
-			JobPositionAdvertisementService jobPositionAdvertisementService, ModelMapper modelMapper) {
+			JobPositionAdvertisementService jobPositionAdvertisementService, RoleService roleService,
+			UserService userService, ModelMapper modelMapper) {
 		super();
 		this.employeeDao = employeeDao;
 		this.employerService = employerService;
 		this.jobPositionAdvertisementService = jobPositionAdvertisementService;
+		this.roleService = roleService;
+		this.userService = userService;
 		this.modelMapper = modelMapper;
 	}
 
 	
-
 	@Override
 	public DataResult<Page<Employee>> getAll(int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
@@ -83,5 +91,28 @@ public class EmployeeManager implements EmployeeService{
 		
 		return jobPositionAdvertisementService.changeApproveJobPositionAdvetisement(jobAdvertisementId);
 	}
+
+
+
+	@Override
+	public DataResult<User> setRoleToUser(int userId, String roleName) {
+		
+		Role role = roleService.getByName(roleName).getData();
+		User user = userService.getById(userId).getData();
+		user.setRole(role);
+		userService.addOrUpdate(user);
+		return new SuccessDataResult<User>(user,String.format("%s emaile sahip kullanıcıya başarı ile %s rolü eklendi! ", user.getEmail(),role.getName()));
+	}
+
+
+	@Override
+	public DataResult<Page<User>> getAllUsers(int pageNo, int pageSize) {
+		
+		return new SuccessDataResult<Page<User>>(userService.getAll(pageNo, pageSize).getData(), userService.getAll(pageNo, pageSize).getMessage());
+	}
+
+	
+
+	
 
 }
