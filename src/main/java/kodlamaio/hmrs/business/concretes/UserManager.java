@@ -11,7 +11,8 @@ import kodlamaio.hmrs.core.utilities.results.DataResult;
 import kodlamaio.hmrs.core.utilities.results.Result;
 import kodlamaio.hmrs.core.utilities.results.SuccessDataResult;
 import kodlamaio.hmrs.core.utilities.results.SuccessResult;
-import kodlamaio.hmrs.dataAccess.UserDao;
+import kodlamaio.hmrs.dataAccess.abstracts.UserDao;
+import kodlamaio.hmrs.entities.concretes.Role;
 import kodlamaio.hmrs.entities.concretes.User;
 
 @Service
@@ -36,6 +37,12 @@ public class UserManager implements UserService {
 	public DataResult<Page<User>> getAll(int pageNo,int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
 		return new SuccessDataResult<Page<User>>(userDao.findAll(pageable),"Tüm kullanıcılar başarıyla getirildi!");
+	}
+
+	@Override
+	public DataResult<String> getRoleNameById(int id) {
+		
+		return new SuccessDataResult<String>(userDao.getRoleByUserId(id), "Rol adı getirme işlemi başarılı!");
 	}
 
 }

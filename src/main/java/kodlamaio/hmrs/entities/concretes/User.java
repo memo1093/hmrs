@@ -42,6 +42,7 @@ public class User {
 	@Column(name="re_password")
 	private String repassword;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "role_id")
 	private Role role;

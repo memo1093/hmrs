@@ -8,4 +8,5 @@ import kodlamaio.hmrs.entities.concretes.Role;
 
 public interface RoleDao extends JpaRepository<Role, Integer> {
 	Role findByNameIgnoreCase(String name);
+	
 }

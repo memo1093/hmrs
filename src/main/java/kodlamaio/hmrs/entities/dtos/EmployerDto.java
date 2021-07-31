@@ -25,12 +25,8 @@ public class EmployerDto {
 	@Email(message = "Lütfen geçerli bir email adresi giriniz")
 	private String email;
 	
-	@NotBlank(message = "Şifre kısmı boş bırakılamaz")
-	@NotNull(message = "Şifre kısmı boş bırakılamaz")
 	private String password;
 	
-	@NotBlank(message="Şifre tekrarı kısmı boş bırakılamaz")
-	@NotNull(message="Şifre tekrarı kısmı boş bırakılamaz")
 	private String repassword;
 
 	@NotNull(message="Şirket adı kısmı boş bırakılamaz")
@@ -48,6 +44,8 @@ public class EmployerDto {
 	@NotBlank(message="Şirket telefon numarası boş bırakılamaz")
 	@Length(min = 10,max=10,message="Şirket telefon numarası 10 karakterli olmalıdır")
 	private String phoneNumber;
+	
+	
 	
 
 

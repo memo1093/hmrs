@@ -21,12 +21,10 @@ public class EmployeeDto {
 	@Email(message = "Lütfen geçerli bir email adresi giriniz")
 	private String email;
 	
-	@NotBlank(message = "Şifre kısmı boş bırakılamaz")
-	@NotNull(message = "Şifre kısmı boş bırakılamaz")
+	
 	private String password;
 	
-	@NotBlank(message="Şifre tekrarı kısmı boş bırakılamaz")
-	@NotNull(message="Şifre tekrarı kısmı boş bırakılamaz")
+	
 	private String repassword;
 	
 	@NotNull(message="Ad kısmı boş bırakılamaz")

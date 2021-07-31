@@ -36,8 +36,8 @@ public class EmployeesController extends ValidationHandler{
 		
 		return employeeService.getAll(pageNo,pageSize);
 	}
-	@GetMapping("/get")
-	public DataResult<Employee> get(@RequestParam int id){
+	@GetMapping("/getById")
+	public DataResult<Employee> getById(@RequestParam int id){
 		return employeeService.get(id);
 	}
 	@GetMapping("/getAllUsers")

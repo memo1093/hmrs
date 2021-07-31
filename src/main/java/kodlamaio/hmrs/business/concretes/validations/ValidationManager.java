@@ -13,6 +13,10 @@ public class ValidationManager{
 
 	
 	public Result validate(User user) {
+		//Controls passwords if not equals.
+				if (user.getPassword()==null || user.getRepassword()==null){
+					return new ErrorResult("Şifre kısımları boş bırakılamaz.");
+				}
 		
 		//Controls passwords if not equals.
 		if (!user.getPassword().equals(user.getRepassword())) {

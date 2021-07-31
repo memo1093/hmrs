@@ -61,7 +61,7 @@ public class EmployeeManager implements EmployeeService{
 	@Override
 	public DataResult<Employee> get(int id) {
 		
-		return new SuccessDataResult<Employee>(employeeDao.getOne(id),"Veri çekme işlemi başarılı!");
+		return new SuccessDataResult<Employee>(employeeDao.findById(id).get(),"Veri çekme işlemi başarılı!");
 	}
 
 	@Override
@@ -73,6 +73,14 @@ public class EmployeeManager implements EmployeeService{
 		if (!employeeDao.existsById(user.getId()) && user.getId()>0) {
 			return new ErrorResult("Kullanıcı bulunamadı"); 
 		}
+		//If user exist and did not update accounts password
+		if (employeeDao.existsById(user.getId())&& user.getId()>0 && user.getPassword().isEmpty() && user.getRepassword().isEmpty()) {
+			user.setPassword(employeeDao.findById(user.getId()).get().getPassword()); 
+			user.setRepassword(employeeDao.findById(user.getId()).get().getRepassword());
+		}
+		//Adds user a role
+				Role role = roleService.getByName("Employee").getData();
+				user.setRole(role);
 		//Save user
 		employeeDao.save(user);
 		return new SuccessResult(employeeDao.existsById(user.getId())

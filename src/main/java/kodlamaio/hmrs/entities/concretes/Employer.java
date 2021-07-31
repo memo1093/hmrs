@@ -9,8 +9,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +29,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler","jobPositionAdvertisements"})
+@TypeDefs({
+    @TypeDef(name = "json", typeClass = JsonType.class)
+})
 public class Employer extends User{
 	
 	@Column(name="company_name")
@@ -45,4 +52,12 @@ public class Employer extends User{
 	
 	@OneToMany(mappedBy="employer",cascade = CascadeType.ALL)
 	private List<JobPositionAdvertisement> jobPositionAdvertisements;
+	
+	@Type(type = "json")
+	@Column(columnDefinition = "json",name = "updated_data")
+	private Employer updatedData;
+	
+	
+	
+	
 }
