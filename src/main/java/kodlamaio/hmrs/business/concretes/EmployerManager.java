@@ -157,6 +157,7 @@ public class EmployerManager implements EmployerService{
 			Employer updatedData = employer.getUpdatedData();
 			updatedData.setPassword(employer.getPassword());
 			updatedData.setRepassword(employer.getRepassword());
+			updatedData.setActivated(true);
 			employerDao.save(updatedData);
 			
 		}
