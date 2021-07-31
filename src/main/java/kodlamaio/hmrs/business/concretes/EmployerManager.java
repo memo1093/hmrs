@@ -108,6 +108,7 @@ public class EmployerManager implements EmployerService{
 				user.setRepassword(updatedUser.getRepassword());
 			}
 					updatedUser.setUpdatedData(user);
+					
 					employerDao.save(updatedUser);
 					return new SuccessResult(String.format("%s şirketi başarıyla güncellendi. Aktivasyon işlemi için lütfen bekleyin.", user.getCompanyName()));
 				}
@@ -155,11 +156,16 @@ public class EmployerManager implements EmployerService{
 		Employer employer = employerDao.getOne(userId);
 		if (!Objects.isNull(employer.getUpdatedData()) ) {
 			Employer updatedData = employer.getUpdatedData();
+			//Sets empty password
 			updatedData.setPassword(employer.getPassword());
 			updatedData.setRepassword(employer.getRepassword());
+			//Sets role
+			Role role = roleService.getByName("Employer").getData();
+			updatedData.setRole(role);
 			updatedData.setActivated(true);
+			//Saves updated data instead of main data and deletes updated data row.
 			employerDao.save(updatedData);
-			
+			return new SuccessResult("Kullanıcı onay durumu "+(updatedData.isActivated()?"'Onaylı'":"'Onay bekliyor'")+" olarak değiştirildi!");
 		}
 		employer.setActivated(!employer.isActivated());
 		employerDao.save(employer);
